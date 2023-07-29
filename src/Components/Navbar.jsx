@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import Auth from "../Roles/Auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,NavLink } from "react-router-dom";
 import axios from "axios";
  
 const Navbar = () =>{
@@ -48,20 +48,20 @@ const Navbar = () =>{
         </button>
 
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <a href='/#' className="navbar-brand mt-2 mt-lg-0">
+            <NavLink to='/#' className="navbar-brand mt-2 mt-lg-0">
                 <img
                 src="https://img.freepik.com/free-vector/flat-hand-drawn-fashion-designer-illustration-with-sewing-machine_23-2148848375.jpg?w=996&t=st=1689855438~exp=1689856038~hmac=f44cff433a123c11f74f2e19c92647cdd36bcfd0ab5cd33914c8f0d0d4357c4c"
                 height="35"                
                 alt="MDB Logo"
                 loading="lazy"
                 />
-            </a>
+            </NavLink>
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                <a href='/#' className="nav-link" >Home</a>
+                <NavLink to='/' className="nav-link" >Home</NavLink>
                 </li>
                 <li className="nav-item">
-                <a href='/#' className="nav-link" >About Us</a>
+                <NavLink to='/aboutUs' className="nav-link" >About Us</NavLink>
                 </li>
 
                 {
@@ -69,7 +69,7 @@ const Navbar = () =>{
                         if(userAuth.RoleId ===2 ){
                             return(
                                 <li className="nav-item dropdown">
-                                    <a href='/#'
+                                    <NavLink to='/#'
                                     className="nav-link dropdown-toggle"
                                     id="navbarDropdownMenuLink"
                                     role="button"
@@ -77,16 +77,16 @@ const Navbar = () =>{
                                     aria-expanded="false"
                                     >
                                     Request
-                                    </a>
+                                    </NavLink>
                                     <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <li>
-                                        <a href='/#' className="dropdown-item" >New Request</a>
+                                        <NavLink to='/#' className="dropdown-item" >New Request</NavLink>
                                     </li>
                                     <li>
-                                        <a href='/#' className="dropdown-item" >Accepted Request</a>
+                                        <NavLink to='/#' className="dropdown-item" >Accepted Request</NavLink>
                                     </li>
                                     <li>
-                                        <a href='/#' className="dropdown-item" >Rejected Request</a>
+                                        <NavLink to='/#' className="dropdown-item" >Rejected Request</NavLink>
                                     </li>
                                     </ul>
                                 </li>
@@ -108,7 +108,7 @@ const Navbar = () =>{
 
             
             <div className="dropdown">
-                <a href='/#'
+                <NavLink to='/#'
                 className="text-reset me-3 dropdown-toggle hidden-arrow"
                 
                 id="navbarDropdownMenuLink"
@@ -118,19 +118,19 @@ const Navbar = () =>{
                 >
                 <i className="fas fa-bell"></i>
                 <span className="badge rounded-pill badge-notification bg-danger">1</span>
-                </a>
+                </NavLink>
                 <ul
                 className="dropdown-menu dropdown-menu-end"
                 aria-labelledby="navbarDropdownMenuLink"
                 >
                 <li>
-                    <a href='/#' className="dropdown-item" >Some news</a>
+                    <NavLink to='/#' className="dropdown-item" >Some news</NavLink>
                 </li>
                 <li>
-                    <a href='/#' className="dropdown-item" >Another news</a>
+                    <NavLink to='/#' className="dropdown-item" >Another news</NavLink>
                 </li>
                 <li>
-                    <a href='/#' className="dropdown-item" >Something else here</a>
+                    <NavLink to='/#' className="dropdown-item" >Something else here</NavLink>
                 </li>
                 </ul>
             </div>
@@ -139,7 +139,7 @@ const Navbar = () =>{
                 LogIn
             </button>
             ):(<div className="dropdown">
-                <a href='/#'
+                <NavLink to='/#'
                 className="dropdown-toggle d-flex align-items-center hidden-arrow"
                 
                 id="navbarDropdownMenuAvatar"
@@ -151,22 +151,22 @@ const Navbar = () =>{
                     src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
                     className="rounded-circle"
                     height="25"
-                    alt="Black and White Portrait of a Man"
+                    alt="Black and White Portrait of NavLink Man"
                     loading="lazy"
                 />
-                </a>
+                </NavLink>
                 <ul
                 className="dropdown-menu dropdown-menu-end"
                 aria-labelledby="navbarDropdownMenuAvatar"
                 >
                 <li>
-                    <a href='/#' className="dropdown-item" >My profile</a>
+                    <NavLink to='/#' className="dropdown-item" >My profile</NavLink>
                 </li>
                 <li>
-                    <a href='/#' className="dropdown-item" >Settings</a>
+                    <NavLink to='/#' className="dropdown-item" >Settings</NavLink>
                 </li>
                 <li>
-                    <a href='/#' onClick={handleLogOut} className="dropdown-item" >Logout</a>
+                    <NavLink to='/#' onClick={handleLogOut} className="dropdown-item" >Logout</NavLink>
                 </li>
                 </ul>
             </div>)}
