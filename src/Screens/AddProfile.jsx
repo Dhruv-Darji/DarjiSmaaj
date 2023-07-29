@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Auth from "../Roles/Auth";
+import axios from "axios";
 
 const AddProfile = () =>{
+    const [profileImage,SetProfileImage] = useState();
+    const [proofImage,SetProfImage] = useState();
     const [userAuth,setUserAuth] = useState({
         RoleId:'',
         UserId:'',
@@ -10,33 +13,48 @@ const AddProfile = () =>{
       useEffect(()=>{
         const fetchData = async () =>{
             const {RoleId,UserId,Email} = await Auth();
-            setUserAuth({RoleId,UserId,Email});                  
+            setUserAuth({RoleId,UserId,Email});                              
         }
         fetchData();             
       },[]);
+      
       const [singleUser,setSingleUser] = useState({
-        SurName:"",
-        MiddleName:"",
-        FatherName:"",
-        MotherName:"",
+        SurName:"Darji",
+        MiddleName:"Dhruv",
+        FatherName:"Snehalkumar",
+        MotherName:"Ragini",
         Gender:"Male",
-        DOB:"",
-        Email:"",
+        DOB:"2023-07-11",
+        ProfileEmail:"check@gmail.com",
         LivingWithFamily:"Yes",
-        PinCode:"",
-        Native:"",
-        Village:"",
-        Address:"",
-        Discription:""                      
+        PinCode:"389330",
+        Native:"Vejalpur",
+        Village:"Kalol",
+        Address:"Kalol",
+        Discription:"This is somthing testing",
       });
       const getSingleUser = (event) => {
         const { name, value } = event.target;
         setSingleUser({ ...singleUser, [name]: value });
       }
 
-      const handleSubmit = (e) =>{
-        e.preventDefault();
-        console.log(singleUser);
+      const handleSubmit = async (e) =>{
+        e.preventDefault();        
+
+        const combinedData = {...singleUser,...userAuth}
+        const formData = new FormData();        
+        formData.append("profileImage", profileImage);
+        formData.append("verificationImage",proofImage);
+
+        Object.keys(combinedData).forEach((key)=>{
+          formData.append(key,combinedData[key]);
+        });
+        console.log('formdata:',formData);
+
+        await axios.post('http://localhost:8080/addProfile',formData).then(
+          (result)=>{console.log(result)}
+        ).catch((e)=>console.log('error while uploading Profile:',e));
+
       }
 
     
@@ -48,7 +66,7 @@ const AddProfile = () =>{
         return(
             <>
             <div className="row justify-content-center">
-              <div className="card bg-light text-center w-50 mt-4">
+              <div className="card bg-light text-center w-75 mt-4">
               <div className="card-header"><h3 className="p-2">Add Your Profile</h3></div>
               <div className="card-body">
               <h5>Personal Information</h5>
@@ -102,7 +120,7 @@ const AddProfile = () =>{
 
                           <div className="col-md-6 mb-4">
                           <div className="form-outline mb-4">
-                            <input type="email" id="form3Example3" name='Email' value={singleUser.Email} onChange={getSingleUser} className="form-control" />
+                            <input type="email" id="form3Example3" name='ProfileEmail' value={singleUser.ProfileEmail} onChange={getSingleUser} className="form-control" />
                             <label className="form-label" htmlFor="form3Example3">Email</label>
                           </div>
                           </div>
@@ -161,21 +179,21 @@ const AddProfile = () =>{
                             <label className="form-label" htmlFor="form6Example7">Discription Yourself</label>
                           </div>
                           
-                          <div className="d-flex justify-content-between my-4">
+                          <div className="d-flex justify-content-center my-4">
                             <p>
                             Upload Your Image                            
                             </p>
-                            <input type="file" className="form-outline px-4" id="customFile" />
+                            <input type="file" onChange={(event)=>{SetProfileImage(event.target.files[0])}} className="form-outline px-4" id="customFile" />
                           </div>                   
 
                           <h5>Education Information</h5>
                           <hr></hr>
 
-                          <div className="d-flex justify-content-between my-4">
+                          <div className="d-flex justify-content-center my-4">
                             <p>
                             Upload Any Document for verification                            
                             </p>
-                            <input type="file" className="form-outline px-4" id="customFile" />
+                            <input type="file" onChange={(event)=>{SetProfImage(event.target.files[0])}} className="form-outline px-4" id="customFile" />
                           </div>
 
 
