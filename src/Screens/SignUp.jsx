@@ -7,9 +7,9 @@ import { useNavigate } from "react-router-dom";
   const SignUp = () => {   
     const navigate = useNavigate();
     const [singleUser,setSingleUser] = useState({
-      FirstName:'',
+      SurName:'',
       MiddleName: '',
-      LastName:'',
+      FatherName:'',
       Pargana:'',
       PinCode:'',
       Gender:'Male',
@@ -70,8 +70,8 @@ import { useNavigate } from "react-router-dom";
                           <div className="row">
                             <div className="col-md-6 mb-4">
                               <div className="form-outline">
-                                <input type="text" id="form3Example1" name='FirstName' value={singleUser.FirstName} onChange={getSingleUser} className="form-control" required/>
-                                <label className="form-label" htmlFor="form3Example1">First name</label>
+                                <input type="text" id="form3Example1" name='SurName' value={singleUser.SurName} onChange={getSingleUser} className="form-control" required/>
+                                <label className="form-label" htmlFor="form3Example1">SurName</label>
                               </div>
                             </div>
                             <div className="col-md-6 mb-4">
@@ -82,8 +82,8 @@ import { useNavigate } from "react-router-dom";
                             </div>
                             <div className="col-md-6 mb-4">
                               <div className="form-outline">
-                                <input type="text" id="form3Example2" name='LastName' value={singleUser.LastName} onChange={getSingleUser} className="form-control" required/>
-                                <label className="form-label" htmlFor="form3Example2">Last name</label>
+                                <input type="text" id="form3Example2" name='FatherName' value={singleUser.FatherName} onChange={getSingleUser} className="form-control" required/>
+                                <label className="form-label" htmlFor="form3Example2">Father's Name</label>
                               </div>
                             </div>
                             <div className="col-md-6 mb-4">

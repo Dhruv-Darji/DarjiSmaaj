@@ -2,25 +2,30 @@ import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Home from './Home';
 import Login from './Login';
+import Error from "../Components/Error";
 import Navbar from "../Components/Navbar";
 import SignUp from "./SignUp";
-import AddProfile from "./AddProfile";
 import AboutUs from "./AboutUs";
 import Dashboard from "./Dashboard";
+import AddProfile from "./AddProfile";
+import Administrate from "./SuperAdmin/Administrate";
 
 const App = () => {
     const location = useLocation();
-    const hideNavbarOnLogin = location.pathname === "/login" || location.pathname === "/signup"; // Hide Navbar on both Login and Signup routes.
+    const hideNavbarOnPaths = ["/login", "/signup", "/error"];
+    const shouldHideNavbar = hideNavbarOnPaths.includes(location.pathname);
 
     return (
         <>
-            {!hideNavbarOnLogin && <Navbar />}
-            <Routes>
+            {!shouldHideNavbar && <Navbar />}
+            <Routes>                
                 <Route exact path="/" element={<Home/>} />
-                <Route exact path="/Dashboard" element={<Dashboard/>}/>
+                <Route exact path="/error" element={<Error/>} />
                 <Route exact path="/login" element={<Login/>}/>
                 <Route exact path="/signup" element={<SignUp/>}/>
                 <Route exact path="/aboutUs" element={<AboutUs/>}/>
+                <Route exact path="/Administrate" element={<Administrate/>} />              
+                <Route exact path="/Dashboard" element={<Dashboard/>}/>
                 <Route exact path="/addProfile" element={<AddProfile/>} />
                 <Route path="*" element={<Home/>}/>
             </Routes>
