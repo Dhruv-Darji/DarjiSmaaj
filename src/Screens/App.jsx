@@ -6,6 +6,7 @@ import Navbar from "../Components/Navbar";
 import SignUp from "./SignUp";
 import AddProfile from "./AddProfile";
 import AboutUs from "./AboutUs";
+import Dashboard from "./Dashboard";
 
 const App = () => {
     const location = useLocation();
@@ -16,6 +17,7 @@ const App = () => {
             {!hideNavbarOnLogin && <Navbar />}
             <Routes>
                 <Route exact path="/" element={<Home/>} />
+                <Route exact path="/Dashboard" element={<Dashboard/>}/>
                 <Route exact path="/login" element={<Login/>}/>
                 <Route exact path="/signup" element={<SignUp/>}/>
                 <Route exact path="/aboutUs" element={<AboutUs/>}/>

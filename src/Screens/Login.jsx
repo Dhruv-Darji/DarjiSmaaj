@@ -32,13 +32,23 @@ const Login = () => {
   axios.defaults.withCredentials = true;
   const navigate = useNavigate();
 
+  const passUser = async() =>{
+    const { RoleId } = await Auth();
+    console.log(RoleId);
+    if(RoleId===1 || RoleId===2 || RoleId===3){
+      navigate('/Dashboard');
+    }
+    else{
+      navigate('/');
+    }
+  }
+
   const handleSubmit = async (e) =>{
     e.preventDefault();
     if(userAuth.RoleId === null && userAuth.UserId === null && userAuth.Email === null){
       axios.post('http://localhost:8080/authenticate',fieldValue).then(
         ()=>{
-          console.log('user Login confirm.');
-          navigate('/');          
+          passUser();
         }        
       ).catch((e)=>{
         console.error('Error while login!',e)

@@ -57,16 +57,55 @@ const Navbar = () =>{
                 />
             </NavLink>
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                <li className="nav-item">
-                <NavLink to='/' className="nav-link" >Home</NavLink>
-                </li>
+                {(
+                ()=>{
+                    if(userAuth.RoleId===1 || userAuth.RoleId===2 || userAuth.RoleId===3){
+                        return(<li className="nav-item">
+                        <NavLink to='/Dashboard' className="nav-link" >Dashboard</NavLink>
+                        </li>);
+                    }else{
+                        return(
+                        <li className="nav-item">
+                        <NavLink to='/' className="nav-link" >Home</NavLink>
+                        </li>
+                        );
+                    }
+                })()
+                }
                 <li className="nav-item">
                 <NavLink to='/aboutUs' className="nav-link" >About Us</NavLink>
                 </li>
 
                 {
                     (()=>{
-                        if(userAuth.RoleId ===2 ){
+                        if(userAuth.RoleId ===1){
+                            return(
+                                <li className="nav-item dropdown">
+                                    <NavLink to='/#'
+                                    className="nav-link dropdown-toggle"
+                                    id="navbarDropdownMenuLink"
+                                    role="button"
+                                    data-mdb-toggle="dropdown"
+                                    aria-expanded="false"
+                                    >
+                                    Admin
+                                    </NavLink>
+                                    <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li>
+                                        <NavLink to='/#' className="dropdown-item" >Create New</NavLink>
+                                    </li>
+                                    <li>
+                                        <NavLink to='/#' className="dropdown-item" >District Admin</NavLink>
+                                    </li>
+                                    <li>
+                                        <NavLink to='/#' className="dropdown-item" >Admin</NavLink>
+                                    </li>
+                                    </ul>
+                                </li>
+                                )                                
+                            
+                        }
+                        else if(userAuth.RoleId ===2 || userAuth.RoleId===3){
                             return(
                                 <li className="nav-item dropdown">
                                     <NavLink to='/#'

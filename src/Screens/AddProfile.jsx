@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Auth from "../Roles/Auth";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AddProfile = () =>{
+    const navigate = useNavigate();
     const [profileImage,SetProfileImage] = useState();
     const [proofImage,SetProfImage] = useState();
     const [userAuth,setUserAuth] = useState({
@@ -19,19 +21,20 @@ const AddProfile = () =>{
       },[]);
       
       const [singleUser,setSingleUser] = useState({
-        SurName:"Darji",
-        MiddleName:"Dhruv",
-        FatherName:"Snehalkumar",
-        MotherName:"Ragini",
+        SurName:"",
+        MiddleName:"",
+        FatherName:"",
+        MotherName:"",
         Gender:"Male",
-        DOB:"2023-07-11",
-        ProfileEmail:"check@gmail.com",
+        DOB:"",
+        ProfileEmail:"",
         LivingWithFamily:"Yes",
-        PinCode:"389330",
-        Native:"Vejalpur",
-        Village:"Kalol",
-        Address:"Kalol",
-        Discription:"This is somthing testing",
+        PinCode:"",
+        Native:"",
+        Village:"",
+        Address:"",
+        Discription:"",
+        ApproovedbyAdmin:"No",
       });
       const getSingleUser = (event) => {
         const { name, value } = event.target;
@@ -52,7 +55,25 @@ const AddProfile = () =>{
         console.log('formdata:',formData);
 
         await axios.post('http://localhost:8080/addProfile',formData).then(
-          (result)=>{console.log(result)}
+          ()=>{
+            navigate('/');
+            setSingleUser({
+              SurName:"",
+              MiddleName:"",
+              FatherName:"",
+              MotherName:"",
+              Gender:"Male",
+              DOB:"",
+              ProfileEmail:"",
+              LivingWithFamily:"Yes",
+              PinCode:"",
+              Native:"",
+              Village:"",
+              Address:"",
+              Discription:"",
+              ApproovedbyAdmin:"No",
+            });
+          }
         ).catch((e)=>console.log('error while uploading Profile:',e));
 
       }
