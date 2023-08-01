@@ -88,28 +88,65 @@ const Administrate = () => {
                 Pincode:user.PinCode,
                 Role: user.RoleId===1 ? 'SuperAdmin' : user.RoleId===2 ? 'DistrictAdmin': user.RoleId===3 ? 'Admin': 'NormalUser', 
                 Show:(
-                    <button type="button" data-mdb-toggle="modal" data-mdb-target="#exampleModal" class="btn btn-primary btn-floating">
-                        <i class="fas fa-download"></i>
+                    <button type="button" data-mdb-toggle="modal" data-mdb-target="#exampleModal" className="btn btn-primary btn-floating">
+                        <i className="fas fa-download"></i>
                     </button>          
                 )
             }
         })
     }
-
     if (userAuth.RoleId === 1 || userAuth.RoleId === 2) {
         return (
             <>
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog">
+                <div className="modal-content">
+                <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLabel">Edit</h5>
+                    <button type="button" className="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">testing</div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                <div className="modal-body">
+                <div className="card-body text-center">
+            <div className="mt-3 mb-4">
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                className="rounded-circle img-fluid w-25"/>
+            </div>
+            <h4 className="mb-2">Julie L. Arsenault</h4>
+            <p className="text-muted mb-4">@Programmer <span className="mx-2">|</span> <a
+                href="#!">mdbootstrap.com</a></p>
+            <div className="mb-4 pb-2">
+              <button type="button" className="btn btn-outline-primary btn-floating">
+                <i className="fab fa-facebook-f fa-lg"></i>
+              </button>
+              <button type="button" className="btn btn-outline-primary btn-floating">
+                <i className="fab fa-twitter fa-lg"></i>
+              </button>
+              <button type="button" className="btn btn-outline-primary btn-floating">
+                <i className="fab fa-skype fa-lg"></i>
+              </button>
+            </div>
+            <button type="button" className="btn btn-primary btn-rounded btn-lg">
+              Message now
+            </button>
+            <div className="d-flex justify-content-between text-center mt-5 mb-2">
+              <div>
+                <p className="mb-2 h5">8471</p>
+                <p className="text-muted mb-0">Wallets Balance</p>
+              </div>
+              <div className="px-3">
+                <p className="mb-2 h5">8512</p>
+                <p className="text-muted mb-0">Income amounts</p>
+              </div>
+              <div>
+                <p className="mb-2 h5">4751</p>
+                <p className="text-muted mb-0">Total Transactions</p>
+              </div>
+            </div>
+          </div>
+                </div>
+                <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                    <button type="button" className="btn btn-primary">Save changes</button>
                 </div>
                 </div>
             </div>
