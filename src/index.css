@@ -6,3 +6,6 @@
 .transparentbutton{
   background-color: transparent;  
 }
+.change-curser{
+  cursor: pointer;
+}

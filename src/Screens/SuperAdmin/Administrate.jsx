@@ -6,6 +6,7 @@ import axios from "axios";
 
 const Administrate = () => {
     const navigate = useNavigate();
+    const [inputCheck,setInputCheck] = useState(false);
     const [selectedRole,setSelectedRole] = useState({
         RoleId:'',
         RoleName:'',       
@@ -36,29 +37,6 @@ const Administrate = () => {
         fetchData();
         fetchUser();
     }, []);
-
-    const handleRoleChange = (user) =>{
-        const changeRoleId = selectedRole.RoleId;
-        const userUserId = user.UserId;
-        const currentRoleId = userAuth.RoleId;
-        const combinedData = {changeRoleId,userUserId,currentRoleId};
-        console.log("formData:",combinedData)
-        if(window.confirm(`Are You Sure to assign him as ${selectedRole.RoleName}`)){
-            axios.post('http://192.168.0.112:8080/change/assignRole',combinedData).then(
-                ()=>{
-                    console.log("Role Updated successfuly");
-                    fetchUser();
-                    setSelectedRole({
-                        RoleId:'',
-                        RoleName:'',    
-                    });
-                }
-            )
-        }
-        else{
-            console.log('You have blocked the notification of window.confirm')
-        }      
-    }
 
     const columnAndRow ={
         autowidth:true,
@@ -123,7 +101,49 @@ const Administrate = () => {
         })
     }
 
+    const handleRoleChange = (user) =>{
+        const changeRoleId = selectedRole.RoleId;
+        const userUserId = user.UserId;
+        const currentRoleId = userAuth.RoleId;
+        const combinedData = {changeRoleId,userUserId,currentRoleId};
+        console.log("formData:",combinedData)
+        if(window.confirm(`Are You Sure to assign him as ${selectedRole.RoleName}`)){
+            axios.post('http://192.168.0.112:8080/change/assignRole',combinedData).then(
+                ()=>{
+                    console.log("Role Updated successfuly");
+                    fetchUser();
+                    setSelectedRole({
+                        RoleId:'',
+                        RoleName:'',    
+                    });
+                    setInputCheck(false);
+                }
+            )
+        }
+        else{
+            console.log('You have blocked the notification of window.confirm')
+        }      
+    }
+
+    const handleVillageChange = async (user,testnumber) =>{
+        const AssignedPinCode =testnumber;
+        const CurrentUserId = userAuth.UserId;
+        const CurrentUserRoleId = userAuth.RoleId;
+        const UserId = user.UserId;
+
+        const combinedData ={AssignedPinCode,CurrentUserId,UserId,CurrentUserRoleId}
+        
+        await axios.post('http://192.168.0.112:8080/change/admin/village',combinedData).then(
+            ()=>{
+                console.log('data passed successfully')
+            }
+        ).catch((e)=>{
+            console.log('error in change admin village metthod:',e);
+        })
+        
+    }
     const ProfileModal = ({user}) =>{
+        const [testnumber,setTestnumber] = useState(''); 
         if(!user){
             return(
                 <h1>Not user</h1>
@@ -134,10 +154,14 @@ const Administrate = () => {
                 <div className="modal-content">
                 <div className="modal-header">
                     <h5 className="modal-title" id="exampleModalLabel">Edit In Role</h5>
-                    <button type="button" onClick={()=>setSelectedRole({
+                    <button type="button" onClick={
+                    ()=>{
+                    setSelectedRole({
                         RoleId:'',
                         RoleName:'',       
-                    })} className="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                    });
+                    setInputCheck(false);
+                    }} className="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div className="modal-body">
                 <div className="card-body text-center">
@@ -177,18 +201,41 @@ const Administrate = () => {
             <button type="button" className="btn btn-primary btn-rounded btn-lg">
               Message now
             </button>
-            <div className="card-body p-4">
-                <hr className="mt-0 mb-4"/>
-                <div className="row pt-1">
-                  <div className="col-6 mb-3">
-                    <p className="text-muted fw-bold mb-0">Village</p>
-                    <p className="mb-2 fw-light">{`${user.Village}`}</p> 
-                  </div>
-                  <div className="col-6 mb-3">
-                    <p className="text-muted fw-bold mb-0">Address</p>
-                    <p className="mb-2 fw-light">{`${user.Address}`}</p> 
-                  </div>
-                </div>
+            <div className="card-body">
+                <hr className="mt-4 mb-4"/>
+                <div className="d-flex justify-content-around text-center p-4 mt-2 mb-2">
+                        {(()=>{
+                        if(userAuth.RoleId===1){
+                            if(user.RoleId===2){
+                                return(<div>
+                                    <p className="text-muted fw-bold mb-0">Assigned District</p>
+                                    <span className="badge badge-warning rounded-pill d-inline">@Panchmahals</span>
+                                </div>);
+                            }
+                            if(user.RoleId===3){
+                                return(<div>
+                                    <p className="text-muted fw-bold mb-0">Assigned Village</p>
+                                    <span className="badge badge-warning rounded-pill d-inline">@389330</span>
+                                    {inputCheck===true && !selectedRole.RoleId?(
+                                        <>
+                                        <div className="form-outline">
+                                            <input value={testnumber} onChange={(e)=>setTestnumber(e.target.value)} type="number" className="form-control" />
+                                        </div>
+                                        </>
+                                    ):!selectedRole.RoleId?(<span onClick={()=>setInputCheck(true)} className="badge change-curser badge-success rounded-pill d-inline">@add</span>):(<></>)}
+                                </div>);                        
+                            }
+                        }
+                    })()}
+                    <div>
+                        <p className="text-muted fw-bold mb-0">Village</p>
+                        <p className="mb-2 fw-light">{`${user.Village}`}</p>                
+                    </div>
+                    <div>
+                        <p className="text-muted fw-bold mb-0">Address</p>
+                        <p className="mb-2 fw-light">{`${user.Address}`}</p>                
+                    </div>
+                    </div>
                 </div>
             <div className="d-flex justify-content-between text-center p-4 mt-2 mb-2">
               <div>
@@ -203,24 +250,28 @@ const Administrate = () => {
                 <p className="text-muted fw-bold mb-0">Native</p>
                 <p className="mb-2 fw-light">{`${user.Native}`}</p>                
               </div>
+              <div>
+                <p className="text-muted fw-bold mb-0">PinCode</p>
+                <p className="mb-2 fw-light">{`${user.PinCode}`}</p>                
+              </div>
             </div>
           </div>
                 </div>
                 <div className="modal-footer">
                 {(()=>{
-                    if(!selectedRole.RoleId){if(userAuth.RoleId===1){
+                    if(inputCheck===false){if(!selectedRole.RoleId){if(userAuth.RoleId===1){
                         return(
                             <p>Make him{" "}
-                            <span onClick={()=>setSelectedRole({RoleId:2,RoleName:'DistrictAdmin'})} className="badge badge-primary rounded-pill d-inline">@DistrictAdmin</span>
+                            <span change-curser onClick={()=>setSelectedRole({RoleId:2,RoleName:'DistrictAdmin'})} className="badge badge-primary rounded-pill d-inline">@DistrictAdmin</span>
                             {" "}or{" "}
-                            <span onClick={()=>setSelectedRole({RoleId:3,RoleName:'Admin'})} className="badge badge-warning rounded-pill d-inline">@Admin</span>                            
+                            <span change-curser onClick={()=>setSelectedRole({RoleId:3,RoleName:'Admin'})} className="badge badge-warning rounded-pill d-inline">@Admin</span>                            
                             </p>
                         );
                     }
                     if(userAuth.RoleId===2){
                         return(
                             <p>Make him{" "}                            
-                            <span onClick={()=>setSelectedRole({RoleId:3,RoleName:'Admin'})} className="badge badge-warning rounded-pill d-inline">@Admin</span>                            
+                            <span change-curser onClick={()=>setSelectedRole({RoleId:3,RoleName:'Admin'})} className="badge badge-warning rounded-pill d-inline">@Admin</span>                            
                             </p>
                         );                        
                     }}
@@ -239,10 +290,18 @@ const Administrate = () => {
                                 </p>
                             );
                         }                        
-                    }
+                    }}
                 })()}
-                    <button type="button" onClick={()=>setSelectedRole({RoleId:'',RoleName:''})} className="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                    <button type="button" onClick={
+                        ()=>{
+                            setSelectedRole({
+                                RoleId:'',
+                                RoleName:''
+                                });
+                            setInputCheck(false);                            
+                            }} className="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
                     { !selectedRole.RoleId?<></>:(<button type="button" onClick={()=>handleRoleChange(user)} data-mdb-dismiss="modal" className="btn btn-secondary">Save changes</button>)}
+                    { inputCheck===true?(<button type="button" onClick={()=>handleVillageChange(user,testnumber)} data-mdb-dismiss="modal" className="btn btn-secondary">Save changes</button>):(<></>)}
                 </div>
                 </div>);
     }
