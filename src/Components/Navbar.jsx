@@ -78,7 +78,7 @@ const Navbar = () =>{
 
                 {
                     (()=>{
-                        if(userAuth.RoleId ===1){
+                        if(userAuth.RoleId ===1 || userAuth.RoleId ===2){
                             return(
                                 <li className="nav-item dropdown">
                                     <NavLink to='/#'
@@ -105,7 +105,13 @@ const Navbar = () =>{
                                 )                                
                             
                         }
-                        else if(userAuth.RoleId ===2 || userAuth.RoleId===3){
+                        else{
+                            return(<></>);
+                        } 
+                    })()
+                }
+                {(()=>{
+                    if(userAuth.RoleId ===2 || userAuth.RoleId===3){
                             return(
                                 <li className="nav-item dropdown">
                                     <NavLink to='/#'
@@ -136,8 +142,7 @@ const Navbar = () =>{
                                 <></>                                
                             )
                         }
-                    })()
-                }                
+                })()}                
                   
             </ul>
             </div>

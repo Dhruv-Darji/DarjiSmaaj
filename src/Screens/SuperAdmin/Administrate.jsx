@@ -17,7 +17,7 @@ const Administrate = () => {
         UserId: '',
         Email: ''
     });
-    const fetchUser = async() =>{
+    const fetchAdminUser = async() =>{
         await axios.get('http://192.168.0.112:8080/list/assignRole')
         .then(
             (respons)=>{
@@ -26,16 +26,31 @@ const Administrate = () => {
             }
         ).catch((err)=>{
             console.log('error while fetch data:',err);            
+        });
+    }
+    const fetchDadminUser = async (UserId) =>{
+        console.log("current user userId:",UserId);
+        await axios.post("http://192.168.0.112:8080/list/districtUser",{UserId:UserId}).then(
+            (respons)=>{
+                const usersdata = respons.data;
+                SetUsers(usersdata.result);      
+            }
+        ).catch((err)=>{
+            console.log(err);
         })
     }
     useEffect(() => {
         const fetchData = async () => {
             const { RoleId, UserId, Email } = await Auth();
             setUserAuth({ RoleId, UserId, Email });
-            console.log(RoleId);
+            if(RoleId===1){                
+                fetchAdminUser();
+            }
+            if(RoleId === 2){                
+                fetchDadminUser(UserId);
+            }
         }
         fetchData();
-        fetchUser();
     }, []);
 
     const columnAndRow ={
@@ -105,13 +120,19 @@ const Administrate = () => {
         const changeRoleId = selectedRole.RoleId;
         const userUserId = user.UserId;
         const currentRoleId = userAuth.RoleId;
-        const combinedData = {changeRoleId,userUserId,currentRoleId};
+        const currentUserId = userAuth.UserId;
+        const combinedData = {changeRoleId,userUserId,currentRoleId,currentUserId};
         console.log("formData:",combinedData)
-        if(window.confirm(`Are You Sure to assign him as ${selectedRole.RoleName}`)){
+        if(window.confirm(`Are You Sure to assign ${user.SurName} ${user.MiddleName} As ${selectedRole.RoleName}`)){
             axios.post('http://192.168.0.112:8080/change/assignRole',combinedData).then(
                 ()=>{
                     console.log("Role Updated successfuly");
-                    fetchUser();
+                    if(userAuth.RoleId===1){
+                        fetchAdminUser();
+                    }
+                    if(userAuth.RoleId===2){
+                        fetchDadminUser(userAuth.UserId);
+                    }                    
                     setSelectedRole({
                         RoleId:'',
                         RoleName:'',    
@@ -135,11 +156,12 @@ const Administrate = () => {
         
         await axios.post('http://192.168.0.112:8080/change/admin/village',combinedData).then(
             ()=>{
-                console.log('data passed successfully')
+                console.log('data passed successfully');
             }
         ).catch((e)=>{
-            console.log('error in change admin village metthod:',e);
-        })
+            console.log('Oops:',e.response.data);
+            console.log('Status Code:',e.response.status);
+        });
         
     }
     const ProfileModal = ({user}) =>{
@@ -205,7 +227,7 @@ const Administrate = () => {
                 <hr className="mt-4 mb-4"/>
                 <div className="d-flex justify-content-around text-center p-4 mt-2 mb-2">
                         {(()=>{
-                        if(userAuth.RoleId===1){
+                        if(userAuth.RoleId===1 || userAuth.RoleId===2){
                             if(user.RoleId===2){
                                 return(<div>
                                     <p className="text-muted fw-bold mb-0">Assigned District</p>
@@ -268,7 +290,7 @@ const Administrate = () => {
                             </p>
                         );
                     }
-                    if(userAuth.RoleId===2){
+                    if(userAuth.RoleId===2 && user.RoleId===4){
                         return(
                             <p>Make him{" "}                            
                             <span change-curser onClick={()=>setSelectedRole({RoleId:3,RoleName:'Admin'})} className="badge badge-warning rounded-pill d-inline">@Admin</span>                            
@@ -301,7 +323,10 @@ const Administrate = () => {
                             setInputCheck(false);                            
                             }} className="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
                     { !selectedRole.RoleId?<></>:(<button type="button" onClick={()=>handleRoleChange(user)} data-mdb-dismiss="modal" className="btn btn-secondary">Save changes</button>)}
-                    { inputCheck===true?(<button type="button" onClick={()=>handleVillageChange(user,testnumber)} data-mdb-dismiss="modal" className="btn btn-secondary">Save changes</button>):(<></>)}
+                    { inputCheck===true?(<button type="button" onClick={()=>handleVillageChange(user,testnumber).then(()=>{
+                        setTestnumber('');
+                        setInputCheck(false)
+                        })} data-mdb-dismiss="modal" className="btn btn-secondary">Save changes</button>):(<></>)}
                 </div>
                 </div>);
     }
