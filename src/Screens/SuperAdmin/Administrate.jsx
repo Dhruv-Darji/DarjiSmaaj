@@ -22,7 +22,7 @@ const Administrate = () => {
         .then(
             (respons)=>{
                 const usersdata = respons.data;
-                SetUsers(usersdata.result);      
+                SetUsers(usersdata);      
             }
         ).catch((err)=>{
             console.log('error while fetch data:',err);            
@@ -33,7 +33,7 @@ const Administrate = () => {
         await axios.post("http://192.168.0.112:8080/list/districtUser",{UserId:UserId}).then(
             (respons)=>{
                 const usersdata = respons.data;
-                SetUsers(usersdata.result);      
+                SetUsers(usersdata);      
             }
         ).catch((err)=>{
             console.log(err);
@@ -123,7 +123,11 @@ const Administrate = () => {
         const currentUserId = userAuth.UserId;
         const combinedData = {changeRoleId,userUserId,currentRoleId,currentUserId};
         console.log("formData:",combinedData)
-        if(window.confirm(`Are You Sure to assign ${user.SurName} ${user.MiddleName} As ${selectedRole.RoleName}`)){
+        if(changeRoleId===user.RoleId){
+            console.log('User is Already in same Position');
+        }
+        else{
+            if(window.confirm(`Are You Sure to assign ${user.SurName} ${user.MiddleName} As ${selectedRole.RoleName}`)){
             axios.post('http://192.168.0.112:8080/change/assignRole',combinedData).then(
                 ()=>{
                     console.log("Role Updated successfuly");
@@ -132,18 +136,18 @@ const Administrate = () => {
                     }
                     if(userAuth.RoleId===2){
                         fetchDadminUser(userAuth.UserId);
-                    }                    
-                    setSelectedRole({
-                        RoleId:'',
-                        RoleName:'',    
-                    });
-                    setInputCheck(false);
+                    } 
                 }
             )
         }
         else{
             console.log('You have blocked the notification of window.confirm')
-        }      
+        }}                    
+        setSelectedRole({
+            RoleId:'',
+            RoleName:'',    
+        });
+        setInputCheck(false);     
     }
 
     const handleVillageChange = async (user,testnumber) =>{
@@ -154,18 +158,30 @@ const Administrate = () => {
 
         const combinedData ={AssignedPinCode,CurrentUserId,UserId,CurrentUserRoleId}
         
-        await axios.post('http://192.168.0.112:8080/change/admin/village',combinedData).then(
+        if(window.confirm(`Are You confirm To Assign ${testnumber} to ${user.SurName} ${user.MiddleName}`)){
+            await axios.post('http://192.168.0.112:8080/change/admin/village',combinedData).then(
             ()=>{
                 console.log('data passed successfully');
+                if(userAuth.RoleId===1){
+                    fetchAdminUser();
+                }
+                if(userAuth.RoleId===2){
+                    fetchDadminUser(userAuth.UserId);
+                } 
             }
         ).catch((e)=>{
             console.log('Oops:',e.response.data);
             console.log('Status Code:',e.response.status);
-        });
+        });}
         
     }
+    
     const ProfileModal = ({user}) =>{
-        const [testnumber,setTestnumber] = useState(''); 
+
+        const [testnumber,setTestnumber] = useState('');        
+        const User_AssignedPinCodeList = user.AssignedPinCode ? user.AssignedPinCode.split(",") : [];
+
+
         if(!user){
             return(
                 <h1>Not user</h1>
@@ -231,20 +247,22 @@ const Administrate = () => {
                             if(user.RoleId===2){
                                 return(<div>
                                     <p className="text-muted fw-bold mb-0">Assigned District</p>
-                                    <span className="badge badge-warning rounded-pill d-inline">@Panchmahals</span>
+                                    <span className="badge badge-warning rounded-pill d-inline">@{user.AssignedDistrict}</span>
                                 </div>);
                             }
                             if(user.RoleId===3){
                                 return(<div>
                                     <p className="text-muted fw-bold mb-0">Assigned Village</p>
-                                    <span className="badge badge-warning rounded-pill d-inline">@389330</span>
+                                    {User_AssignedPinCodeList.map((AssignedPinCode,index)=>(
+                                        <span key={index} className="m-1 badge badge-warning rounded-pill d-inline">@{AssignedPinCode}</span>
+                                    ))}                                    
                                     {inputCheck===true && !selectedRole.RoleId?(
                                         <>
                                         <div className="form-outline">
                                             <input value={testnumber} onChange={(e)=>setTestnumber(e.target.value)} type="number" className="form-control" />
                                         </div>
                                         </>
-                                    ):!selectedRole.RoleId?(<span onClick={()=>setInputCheck(true)} className="badge change-curser badge-success rounded-pill d-inline">@add</span>):(<></>)}
+                                    ):!selectedRole.RoleId?(<span onClick={()=>setInputCheck(true)} className="badge change-curser badge-success rounded-pill d-inline"><i className="far fa-square-plus"></i></span>):(<></>)}
                                 </div>);                        
                             }
                         }
