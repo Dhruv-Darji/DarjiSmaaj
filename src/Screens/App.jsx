@@ -6,9 +6,11 @@ import Error from "../Components/Error";
 import Navbar from "../Components/Navbar";
 import SignUp from "./SignUp";
 import AboutUs from "./AboutUs";
+import AdminList from "./SuperAdmin/AdminList";
 import Dashboard from "./Dashboard";
 import AddProfile from "./AddProfile";
 import Administrate from "./SuperAdmin/Administrate";
+import DistrictAdminList from "./SuperAdmin/DistrictAdminList";
 
 const App = () => {
     const location = useLocation();
@@ -24,9 +26,11 @@ const App = () => {
                 <Route exact path="/login" element={<Login/>}/>
                 <Route exact path="/signup" element={<SignUp/>}/>
                 <Route exact path="/aboutUs" element={<AboutUs/>}/>
-                <Route exact path="/Administrate" element={<Administrate/>} />              
+                <Route exact path="/AdminList" element={<AdminList/>} />             
                 <Route exact path="/Dashboard" element={<Dashboard/>}/>
                 <Route exact path="/addProfile" element={<AddProfile/>} />
+                <Route exact path="/Administrate" element={<Administrate/>} /> 
+                <Route exact path="/DistrictAdminList" element={<DistrictAdminList/>} />
                 <Route path="*" element={<Home/>}/>
             </Routes>
         </>

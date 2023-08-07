@@ -95,10 +95,10 @@ const Navbar = () =>{
                                         <NavLink to='/Administrate' className="dropdown-item" >Create New</NavLink>
                                     </li>
                                     <li>
-                                        <NavLink to='/#' className="dropdown-item" >District Admin List</NavLink>
+                                        <NavLink to='/DistrictAdminList' className="dropdown-item" >District Admin List</NavLink>
                                     </li>
                                     <li>
-                                        <NavLink to='/#' className="dropdown-item" >Admin List</NavLink>
+                                        <NavLink to='/AdminList' className="dropdown-item" >Admin List</NavLink>
                                     </li>
                                     </ul>
                                 </li>
