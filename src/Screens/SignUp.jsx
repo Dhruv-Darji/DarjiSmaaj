@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import '../Styles/SignUp.css';
 import { useNavigate } from "react-router-dom";
-// import Toast from "../Components/Toast"
+import Toast, { showSuccessToast,showErrorToast } from '../Components/Toast';
 
   const SignUp = () => {   
     const navigate = useNavigate();
@@ -35,17 +35,23 @@ import { useNavigate } from "react-router-dom";
         (response)=>{
           console.log('response code:',response.status);
           if(response.status === 200){
+            showSuccessToast('Successfully Registered 🥰.');
             navigate('/login');
           }
         }
       ).catch((e)=>{
-        console.error('Creating NormalUser Error.',e);
+        if(e.response){
+          showErrorToast(`${e.response.data}`);
+        console.error('Error while SignUp!',e.response.data);
+      }else{
+        showErrorToast('Oops! Server Unreachable.');
+      }
       });      
 
     }
       return(
           <>    
-          {/* <Toast />      */}
+          <Toast />     
           <section className="">
             <div className="px-4 py-5 px-md-5 text-center text-lg-start BackgroundColor">
               <div className="container">

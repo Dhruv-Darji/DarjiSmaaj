@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import Auth from "../../Roles/Auth";
 import {MDBDataTable,MDBContainer} from 'mdbreact'; 
 import { useNavigate } from "react-router-dom";
+import Toast, { showSuccessToast,showErrorToast } from '../../Components/Toast';
 import axios from "axios";
+import DateFormater from "../../Components/DateFormater";
 
 const Administrate = () => {
     const navigate = useNavigate();
@@ -24,8 +26,13 @@ const Administrate = () => {
                 const usersdata = respons.data;
                 SetUsers(usersdata);      
             }
-        ).catch((err)=>{
-            console.log('error while fetch data:',err);            
+        ).catch((e)=>{
+            if(e.response){
+                showErrorToast(`${e.response.data}`);
+                console.error('Error while Feching AdminUser!',e.response.data);
+            }else{
+                showErrorToast('Server Unreachable!');
+            }           
         });
     }
     const fetchDadminUser = async (UserId) =>{
@@ -35,8 +42,13 @@ const Administrate = () => {
                 const usersdata = respons.data;
                 SetUsers(usersdata);      
             }
-        ).catch((err)=>{
-            console.log(err);
+        ).catch((e)=>{
+            if(e.response){
+                showErrorToast(`${e.response.data}`);
+                console.error('Error while Feching DadminUser!',e.response.data);
+            }else{
+                showErrorToast('Server Unreachable!');
+            }            
         })
     }
     useEffect(() => {
@@ -48,7 +60,7 @@ const Administrate = () => {
             }
             if(RoleId === 2){                
                 fetchDadminUser(UserId);
-            }
+            }            
         }
         fetchData();
     }, []);
@@ -83,8 +95,7 @@ const Administrate = () => {
                 sort:'asc'
             }
         ],
-        rows:users.map((user,index)=>{
-            // const datePart = new Date(user.DOB).toLocaleDateString();
+        rows:users.map((user,index)=>{            
             return{
                 Index: index + 1,
                 Name: (
@@ -124,14 +135,15 @@ const Administrate = () => {
         const combinedData = {changeRoleId,userUserId,currentRoleId,currentUserId};
         console.log("formData:",combinedData)
         if(changeRoleId===user.RoleId){
-            console.log('User is Already in same Position');
+            showSuccessToast('User is Already in same Position');            
         }
         else{
             if(window.confirm(`Are You Sure to assign ${user.SurName} ${user.MiddleName} As ${selectedRole.RoleName}`)){
             axios.post('http://192.168.0.112:8080/change/assignRole',combinedData).then(
                 ()=>{
                     console.log("Role Updated successfuly");
-                    if(userAuth.RoleId===1){
+                    showSuccessToast("Role Updated successfuly");
+                    if(userAuth.RoleId===1){                        
                         fetchAdminUser();
                     }
                     if(userAuth.RoleId===2){
@@ -141,6 +153,7 @@ const Administrate = () => {
             )
         }
         else{
+            showErrorToast("Oops! Your nitification is blocked.");
             console.log('You have blocked the notification of window.confirm')
         }}                    
         setSelectedRole({
@@ -170,8 +183,12 @@ const Administrate = () => {
                 } 
             }
         ).catch((e)=>{
-            console.log('Oops:',e.response.data);
-            console.log('Status Code:',e.response.status);
+            if(e.response){
+                showErrorToast(`${e.response.data}`);
+              console.error('Error while Adding Village!',e.response.data);
+            }else{
+              showErrorToast('Server Unreachable!');
+            }
         });}
         
     }
@@ -187,7 +204,6 @@ const Administrate = () => {
                 <h1>Not user</h1>
             );
         }
-        const datePart = new Date(user.DOB).toLocaleDateString();
         return (        
                 <div className="modal-content">
                 <div className="modal-header">
@@ -234,7 +250,7 @@ const Administrate = () => {
             <span className="mx-2">|</span> <a
                 href="#!">{`${user.Email}`}</a>
             <span className="mx-2">|</span>
-            {`${datePart}`} 
+            {`${DateFormater(user.DOB)}`} 
                 </p>            
             <button type="button" className="btn btn-primary btn-rounded btn-lg">
               Message now
@@ -352,6 +368,7 @@ const Administrate = () => {
     if (userAuth.RoleId === 1 || userAuth.RoleId === 2) {
         return (
             <> 
+            <Toast/>
             {users.map((user, index) => (
                 <div
                     className="modal fade"
@@ -391,6 +408,6 @@ const Administrate = () => {
         navigate('/error');
         return null;
     }
-}
+}   
 
 export default Administrate;

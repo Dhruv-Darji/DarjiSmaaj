@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Auth from "../Roles/Auth";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Toast, { showSuccessToast,showErrorToast } from '../Components/Toast';
 
 const AddProfile = () =>{
     const navigate = useNavigate();
@@ -74,7 +75,15 @@ const AddProfile = () =>{
               ApproovedbyAdmin:"No",
             });
           }
-        ).catch((e)=>console.log('error while uploading Profile:',e));
+        ).catch((e)=>{
+          if(e.response){
+            showErrorToast(`${e.response.data}`);
+            console.error('Error while Registration!',e.response.data);
+          }else{
+            showErrorToast('Server Unreachable!');
+          }
+          console.log('error while uploading Profile:',e);
+        });
 
       }
 
