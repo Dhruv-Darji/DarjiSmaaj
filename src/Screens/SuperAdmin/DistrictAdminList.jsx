@@ -19,14 +19,14 @@ const DistrictAdminList = () => {
 
   const fetchDadmin = async (RoleId) =>{
     await axios.post('http://192.168.0.112:8080/list/DistrictAdmin',{RoleId},{timeout:15000}).then(
-      (response)=>{   
+      (response)=>{
         setUsersData(response.data);
         setIsLoading(false);
       }
     ).catch((e)=>{
-      if(e.response){
+      if(e.response){ 
         showErrorToast(`${e.response.data}`);
-        console.error('Error while login!',e.response.data);
+        console.error('Error while Getting DistrictAdmin!',e);
       }else{
         showErrorToast('Server Unreachable!');
       }
@@ -41,11 +41,43 @@ const DistrictAdminList = () => {
         if(RoleId===1 || RoleId===2){
           fetchDadmin(RoleId);
         }else{
-          navigate('/error');
+          navigate('/9error');
         }
     }
     fetchData();             
   },[]);
+
+  const handleUserRemove = async (user) =>{
+    setIsLoading(true);
+    if(userAuth.RoleId===1){
+      if(window.confirm(`Do You realy want to remove ${user.SurName} ${user.MiddleName}  from DistrictAdmin of ${user.AssignedDistrict}.`)){
+      const currentRoleId = userAuth.RoleId;
+      const currentUserId = userAuth.UserId;
+      const UserRoleId = user.UserRoleId;      
+      const combindedData = {currentRoleId,UserRoleId,currentUserId}      
+      await axios.post('http://192.168.0.112:8080/remove/Admin',combindedData,{timeout:15000}).then(
+          async ()=>{   
+            showSuccessToast('District Admin Remove Success');            
+            await fetchDadmin(currentRoleId);
+          }
+        ).catch((e)=>{
+          if(e.response){
+            showErrorToast(`${e.response.data}`);
+            console.error('Error while Removing District Admin!',e);
+          }else{
+            showErrorToast('Server Unreachable!');
+          }
+          setIsLoading(false);
+        });
+      }else{
+        setIsLoading(false);
+        showErrorToast('Your Browser Notification is Off!');
+      }      
+    }else{
+      showErrorToast('401! Forbidden. You are not Authorized');
+      navigate('/error');
+    }
+  }
   
   const columnAndRow = {
     autowidth:true,
@@ -87,8 +119,8 @@ const DistrictAdminList = () => {
       },
       ...(userAuth.RoleId===1?[
         {
-          label:'Action',
-          field:'Action',
+          label:'Remove',
+          field:'Remove',
           sort:'asc'
         }
       ]:[]),
@@ -117,7 +149,11 @@ const DistrictAdminList = () => {
         AssignedDistrict:user.AssignedDistrict,
         WhoMade:user.WhoMadeName,
         WhenMade:DateFormater(user.WhenMade),
-        Action:user.SurName                
+        Remove:(
+          <button type="button" onClick={()=>handleUserRemove(user)} className="btn btn-secondary btn-floating">
+            <i className="fas fa-user-slash"></i>
+          </button>          
+        )                
       }      
     })  
   }
