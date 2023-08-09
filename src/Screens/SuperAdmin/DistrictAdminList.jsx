@@ -41,7 +41,7 @@ const DistrictAdminList = () => {
         if(RoleId===1 || RoleId===2){
           fetchDadmin(RoleId);
         }else{
-          navigate('/9error');
+          navigate('/error');
         }
     }
     fetchData();             

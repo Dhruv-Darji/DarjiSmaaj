@@ -5,9 +5,11 @@ import { useNavigate } from "react-router-dom";
 import Toast, { showSuccessToast,showErrorToast } from '../../Components/Toast';
 import axios from "axios";
 import DateFormater from "../../Components/DateFormater";
+import Loading from "../../Components/Loading";
 
 const Administrate = () => {
     const navigate = useNavigate();
+    const [isLoading,setIsLoading] = useState(true);
     const [inputCheck,setInputCheck] = useState(false);
     const [selectedRole,setSelectedRole] = useState({
         RoleId:'',
@@ -24,7 +26,8 @@ const Administrate = () => {
         .then(
             (respons)=>{
                 const usersdata = respons.data;
-                SetUsers(usersdata);      
+                SetUsers(usersdata);
+                setIsLoading(false);      
             }
         ).catch((e)=>{
             if(e.response){
@@ -32,7 +35,8 @@ const Administrate = () => {
                 console.error('Error while Feching AdminUser!',e.response.data);
             }else{
                 showErrorToast('Server Unreachable!');
-            }           
+            }
+            setIsLoading(false);           
         });
     }
     const fetchDadminUser = async (UserId) =>{
@@ -40,7 +44,8 @@ const Administrate = () => {
         await axios.post("http://192.168.0.112:8080/list/districtUser",{UserId:UserId}).then(
             (respons)=>{
                 const usersdata = respons.data;
-                SetUsers(usersdata);      
+                SetUsers(usersdata);
+                setIsLoading(false);      
             }
         ).catch((e)=>{
             if(e.response){
@@ -48,19 +53,25 @@ const Administrate = () => {
                 console.error('Error while Feching DadminUser!',e.response.data);
             }else{
                 showErrorToast('Server Unreachable!');
-            }            
+            }
+            setIsLoading(false);            
         })
     }
     useEffect(() => {
         const fetchData = async () => {
             const { RoleId, UserId, Email } = await Auth();
             setUserAuth({ RoleId, UserId, Email });
+            console.log("This is the RoleId:",RoleId);
             if(RoleId===1){                
                 fetchAdminUser();
             }
-            if(RoleId === 2){                
+            else if(RoleId === 2){                
                 fetchDadminUser(UserId);
-            }            
+            }
+            else{
+                showErrorToast('401! You are Unauthorized Person.');
+                navigate('/error');
+            }           
         }
         fetchData();
     }, []);
@@ -128,14 +139,15 @@ const Administrate = () => {
     }
 
     const handleRoleChange = (user) =>{
+        setIsLoading(true);
         const changeRoleId = selectedRole.RoleId;
         const userUserId = user.UserId;
         const currentRoleId = userAuth.RoleId;
         const currentUserId = userAuth.UserId;
         const combinedData = {changeRoleId,userUserId,currentRoleId,currentUserId};
-        console.log("formData:",combinedData)
         if(changeRoleId===user.RoleId){
             showSuccessToast('User is Already in same Position');            
+            setIsLoading(false);
         }
         else{
             if(window.confirm(`Are You Sure to assign ${user.SurName} ${user.MiddleName} As ${selectedRole.RoleName}`)){
@@ -154,6 +166,7 @@ const Administrate = () => {
         }
         else{
             showErrorToast("Oops! Your nitification is blocked.");
+            setIsLoading(false);
             console.log('You have blocked the notification of window.confirm')
         }}                    
         setSelectedRole({
@@ -164,6 +177,7 @@ const Administrate = () => {
     }
 
     const handleVillageChange = async (user,testnumber) =>{
+        setIsLoading(true);
         const AssignedPinCode =testnumber;
         const CurrentUserId = userAuth.UserId;
         const CurrentUserRoleId = userAuth.RoleId;
@@ -174,11 +188,11 @@ const Administrate = () => {
         if(window.confirm(`Are You confirm To Assign ${testnumber} to ${user.SurName} ${user.MiddleName}`)){
             await axios.post('http://192.168.0.112:8080/change/admin/village',combinedData).then(
             ()=>{
-                console.log('data passed successfully');
+                showSuccessToast("PinCode Successfully Assigned");
                 if(userAuth.RoleId===1){
                     fetchAdminUser();
                 }
-                if(userAuth.RoleId===2){
+                else if(userAuth.RoleId===2){
                     fetchDadminUser(userAuth.UserId);
                 } 
             }
@@ -189,6 +203,7 @@ const Administrate = () => {
             }else{
               showErrorToast('Server Unreachable!');
             }
+            setIsLoading(false);
         });}
         
     }
@@ -365,49 +380,51 @@ const Administrate = () => {
                 </div>);
     }
 
-    if (userAuth.RoleId === 1 || userAuth.RoleId === 2) {
-        return (
-            <> 
-            <Toast/>
-            {users.map((user, index) => (
-                <div
-                    className="modal fade"
-                    id={`exampleModal-${index}`}
-                    tabIndex="-1"
-                    aria-labelledby="exampleModalLabel"
-                    aria-hidden="true"
-                    key={index}
-                >
-                    <div
-                    className="modal-dialog"
-                    style={{ maxWidth: "50%" }}
-                    >
-                    <ProfileModal user={user} />
-                    </div>
-                </div>
-            ))}           
-            <div className="row justify-content-center">
-            <div className="card text-center w-75 mt-4">
-            <MDBContainer>
-                <MDBDataTable
-                    striped
-                    responsive
-                    noBottomColumns
-                    data={columnAndRow}
-                    searching
-                    displayEntries={true}
-                    entries={10}
-                    paginationLabel={['previous','next']}
-                />
-            </MDBContainer>
-            </div> 
-            </div>                         
-            </>
-        );
-    } else {
-        navigate('/error');
-        return null;
-    }
+    
+    return(
+        <>
+        <div>
+    <Toast/>
+    {isLoading === true ? (
+        <Loading />
+                ) : (
+                    <>
+                        {users.map((user, index) => (
+                            <div
+                                className="modal fade"
+                                id={`exampleModal-${index}`}
+                                tabIndex="-1"
+                                aria-labelledby="exampleModalLabel"
+                                aria-hidden="true"
+                                key={index}
+                            >
+                                <div className="modal-dialog" style={{ maxWidth: "50%" }}>
+                                    <ProfileModal user={user} />
+                                </div>
+                            </div>
+                        ))}
+                        <div className="row justify-content-center">
+                            <div className="card text-center w-75 mt-4">
+                                <MDBContainer>
+                                    <MDBDataTable
+                                        striped
+                                        responsive
+                                        noBottomColumns
+                                        data={columnAndRow}
+                                        searching
+                                        displayEntries={true}
+                                        entries={10}
+                                        paginationLabel={['previous','next']}
+                                    />
+                                </MDBContainer>
+                            </div> 
+                        </div>
+                    </>
+                )}
+            </div>
+        </>
+    );
+    
 }   
 
 export default Administrate;
