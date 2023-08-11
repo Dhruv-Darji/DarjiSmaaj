@@ -72,10 +72,6 @@ const Navbar = () =>{
                     }
                 })()
                 }
-                <li className="nav-item">
-                <NavLink to='/aboutUs' className="nav-link" >About Us</NavLink>
-                </li>
-
                 {
                     (()=>{
                         if(userAuth.RoleId ===1 || userAuth.RoleId ===2){
@@ -142,7 +138,15 @@ const Navbar = () =>{
                                 <></>                                
                             )
                         }
-                })()}                
+                })()} 
+
+                <li className="nav-item">
+                <NavLink to='/aboutUs' className="nav-link" >About Us</NavLink>
+                </li> 
+                
+                <li className="nav-item">
+                <NavLink to='/contact-us' className="nav-link" >Contact-Us</NavLink>
+                </li>              
                   
             </ul>
             </div>

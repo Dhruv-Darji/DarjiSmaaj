@@ -8,6 +8,7 @@ import SignUp from "./SignUp";
 import AboutUs from "./AboutUs";
 import AdminList from "./SuperAdmin/AdminList";
 import Dashboard from "./Dashboard";
+import ContactUs from "./ContactUs"
 import AddProfile from "./AddProfile";
 import Administrate from "./SuperAdmin/Administrate";
 import DistrictAdminList from "./SuperAdmin/DistrictAdminList";
@@ -28,6 +29,7 @@ const App = () => {
                 <Route exact path="/aboutUs" element={<AboutUs/>}/>
                 <Route exact path="/AdminList" element={<AdminList/>} />             
                 <Route exact path="/Dashboard" element={<Dashboard/>}/>
+                <Route exact path="/contact-us" element={<ContactUs/>}/>
                 <Route exact path="/addProfile" element={<AddProfile/>} />
                 <Route exact path="/Administrate" element={<Administrate/>} /> 
                 <Route exact path="/DistrictAdminList" element={<DistrictAdminList/>} />
