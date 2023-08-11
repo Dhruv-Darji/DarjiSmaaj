@@ -93,6 +93,11 @@ const AdminList = () =>{
             sort:'asc'
           },
           {
+            label:'Mobile Number',
+            field:'MobileNumber',
+            sort:'asc'
+          },
+          {
             label:'Gender',
             field:'Gender',
             sort:'asc'
@@ -144,6 +149,7 @@ const AdminList = () =>{
               </div>
               </div>
             ),
+            MobileNumber:user.MobileNumber,
             Gender:user.Gender,
             Pargana:user.Pargana,
             AssignedPinCodes:(

@@ -16,7 +16,10 @@ const AddProfile = () =>{
       useEffect(()=>{
         const fetchData = async () =>{
             const {RoleId,UserId,Email} = await Auth();
-            setUserAuth({RoleId,UserId,Email});                              
+            setUserAuth({RoleId,UserId,Email});
+            if(!RoleId){
+              navigate('/error');
+            }                              
         }
         fetchData();             
       },[]);
@@ -87,12 +90,6 @@ const AddProfile = () =>{
 
       }
 
-    
-      if(userAuth.RoleId === null && userAuth.UserId === null && userAuth.Email === null){
-        return(
-            <h1>You are not logged In please Login first</h1>
-        );
-      }else{
         return(
             <>
             <div className="row justify-content-center">
@@ -242,8 +239,8 @@ const AddProfile = () =>{
               </div>
             </div>                
             </>
-        );
-      }
+      );
+      
 }
 
 export default AddProfile;

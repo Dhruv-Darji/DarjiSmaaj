@@ -83,10 +83,13 @@ const Administrate = () => {
                 label:'Index',
                 field:'Index',
                 sort:'asc'
-            },
-            {
+            },{
                 label:'Name',
                 field:'Name',
+                sort:'asc'
+            },{
+                label:'Mobile Number',
+                field:'MobileNumber',
                 sort:'asc'
             },{
                 label:'Role',
@@ -125,6 +128,7 @@ const Administrate = () => {
                     </div>
                     </div>
                 ),
+                MobileNumber:user.MobileNumber,
                 Pargana:user.Pargana,
                 Email: user.Email,
                 Pincode:user.PinCode,
@@ -241,32 +245,34 @@ const Administrate = () => {
             </div>
             <h4 className="mb-2">{`${user.SurName} ${user.MiddleName} ${user.FatherName}`}</h4>
             <p className="text-muted mb-4">
-            {(()=>{
-                if(user.RoleId===1){
-                    return(
-                        <span className="badge badge-success rounded-pill d-inline">@SuperAdmin</span>
-                    );
-                }
-                else if(user.RoleId===2){
-                    return(
-                        <span className="badge badge-primary rounded-pill d-inline">@DistrictAdmin</span>
-                    );
-                }
-                else if(user.RoleId===3){
-                    return(
-                        <span className="badge badge-warning rounded-pill d-inline">@Admin</span>
-                    );
-                }else{
-                    return(
-                        <span className="badge badge-danger rounded-pill d-inline">@NormalUser</span>
-                    );
-                }
-            })()}
-            <span className="mx-2">|</span> <a
-                href="#!">{`${user.Email}`}</a>
-            <span className="mx-2">|</span>
-            {`${DateFormater(user.DOB)}`} 
-                </p>            
+                {(()=>{
+                    if(user.RoleId===1){
+                        return(
+                            <span className="badge badge-success rounded-pill d-inline">@SuperAdmin</span>
+                        );
+                    }
+                    else if(user.RoleId===2){
+                        return(
+                            <span className="badge badge-primary rounded-pill d-inline">@DistrictAdmin</span>
+                        );
+                    }
+                    else if(user.RoleId===3){
+                        return(
+                            <span className="badge badge-warning rounded-pill d-inline">@Admin</span>
+                        );
+                    }else{
+                        return(
+                            <span className="badge badge-danger rounded-pill d-inline">@NormalUser</span>
+                        );
+                    }
+                })()}
+                <span className="mx-2">|</span> <a
+                    href="#!">{`${user.Email}`}</a>
+                <span className="mx-2">|</span>
+                {`${user.MobileNumber}`} 
+                <span className="mx-2">|</span>
+                {`${DateFormater(user.DOB)}`}                
+            </p>            
             <button type="button" className="btn btn-primary btn-rounded btn-lg">
               Message now
             </button>

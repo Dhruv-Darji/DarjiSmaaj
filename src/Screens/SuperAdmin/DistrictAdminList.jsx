@@ -93,6 +93,11 @@ const DistrictAdminList = () => {
         sort:'asc'
       },
       {
+        label:'Mobile Number',
+        field:'MobileNumber',
+        sort:'asc'
+      },
+      {
         label:'Gender',
         field:'Gender',
         sort:'asc'
@@ -144,6 +149,7 @@ const DistrictAdminList = () => {
           </div>
           </div>
         ),
+        MobileNumber:user.MobileNumber,
         Gender:user.Gender,
         Pargana:user.Pargana,
         AssignedDistrict:user.AssignedDistrict,
