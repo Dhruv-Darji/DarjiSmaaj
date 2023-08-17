@@ -10,7 +10,6 @@ const AddProfile = () => {
   const [profileFile,setProfileFile] = useState();
   const [resumeFile,setResumeFile] = useState();
   const [profileData,setProfileData] = useState({
-    ApprovedStatus:'Pending',
     P_SurName:'',
     P_MiddleName:'',
     P_FatherName:'',
@@ -43,54 +42,111 @@ const AddProfile = () => {
     setProfileData({ ...profileData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const combinedData = {...profileData,...userAuth}
-    const formData = new FormData();
-    
-    formData.append("profileFile",profileFile);
-    formData.append("biodataFile",biodataFile);
-    formData.append("resumeFile",resumeFile);
-    Object.keys(combinedData).forEach((key)=>{
-        formData.append(key,combinedData[key]);
-    });
-    console.log("This is the formdata:",formData)
-
-    
-    if(window.confirm('You have checked all documnets and then posting all the data?')){
-        
-        await axios.post(
-            'http://192.168.0.112:8080/addProfile',
-            formData,
-            {timeout:15000}
-        ).then(
-            ()=>{
-            }
-        ).catch((e)=>{
-            console.log("Error:",e);
-            setIsLoading(false);
-            if(e.response){          
-                showErrorToast(`${e.response.data}`);
-                console.error('Error while addProfile!',e.response.data);
-            }else{
-                showErrorToast('Oops! Server Unreachable.');
-            }
-        });
-    }
-    else{
-        showErrorToast("Oops! your browser notification is blocked");
-    }
-    
-
+  const clearForm = () =>{
+    setProfileFile(null);
+    setBiodataFile(null);
+    setResumeFile(null);
+    setProfileData({
+        P_SurName:'',
+        P_MiddleName:'',
+        P_FatherName:'',
+        P_MotherName:'',
+        P_Gender:'Male',
+        P_DOB:'',
+        P_Email:'',
+        LivingWithFamily:'Yes',
+        Discription:'',
+        HigherEducation:'',
+        EmloyeeIn:'',
+        AnnualIncome:'',
+        resumeUpload:'',
+      });          
   }
+
+  const checkMissing = () =>{
+    const missignList = []; 
+
+    Object.keys(profileData).forEach((key)=>{       
+        if(!profileData[key]){
+            missignList.push(key);
+        }        
+    });
+    if(!profileFile){
+        missignList.push('Profile Image');
+    }
+    if(!biodataFile){
+        missignList.push('BioData');
+    }
+    if(profileData.resumeUpload==="Yes" && !resumeFile){
+        missignList.push("Resume");
+    }
+    return missignList;
+  }
+
+  const handleSubmit = async () => {
+    const missingField = checkMissing();
+    if(missingField.length===0){
+        setIsLoading(true);    
+        const combinedData = {...profileData,...userAuth}
+        const formData = new FormData();
+        
+        formData.append("profileFile",profileFile);
+        formData.append("biodataFile",biodataFile);
+        formData.append("resumeFile",resumeFile);
+        Object.keys(combinedData).forEach((key)=>{
+            formData.append(key,combinedData[key]);
+        });
+
+            
+        if(window.confirm('Have you checked all documnets and then posting all the data?')){
+            await axios.post(
+                'http://192.168.0.112:8080/addProfile',
+                formData,
+                {timeout:30000}
+            ).then(
+                (response)=>{                
+                    if(response.status===200){
+                        showSuccessToast(`${response.data}`);
+                        clearForm();
+                        setIsLoading(false);
+                    }
+                }
+            ).catch((e)=>{
+                console.log("Error:",e);
+                setIsLoading(false);
+                if(e.response){          
+                    showErrorToast(`${e.response.data}`);
+                    console.error('Error while addProfile!',e.response.data);
+                }else{
+                    showErrorToast('Oops! Server Unreachable.');
+                }
+                setIsLoading(false);
+            });
+        }
+        else{
+            showErrorToast("Oops! your browser notification is blocked");
+            setIsLoading(false);
+        }
+    }else{
+        alert(`Please Fill Data Correctly or Something Is missing:`);
+    }
+  }
+
+  const marqueeString = `If you already requested once and your request is not accepted than Contact the admin to have your request Accept.`;
 
   return(
   <>
+  {userAuth.RoleId===null?(
+    <>
+    <h1 className="m-4">Please login to access this page</h1>
+    </>
+  ):(
   <div>
   <Toast/>
     {isLoading?(<><Loading/></>)
     :(<div className="container">
         <div className="row justify-content-center mt-5">
+        <marquee><h4 className="mb-4 text-danger fw-bold">{marqueeString}</h4></marquee>
                 <div className="card p-4 w-75">
                     <div className="card-title text-center">
                         <h2>General Details</h2>
@@ -221,7 +277,7 @@ const AddProfile = () => {
                                 <input type="file" onChange={(event)=>{setResumeFile(event.target.files[0])}} className="form-control" id="uploadPhoto"/>
                             </div>
                             </>
-                        ):profileData.ResumeFile=null}
+                        ):()=>setResumeFile(null)}
                     
                         <div className="mb-3">
                             <label htmlFor="description" className="form-label">Description of Yourself,Profession and study:</label>
@@ -237,6 +293,7 @@ const AddProfile = () => {
     </div>)
     }
   </div>
+    )}
   </>
   );
 }

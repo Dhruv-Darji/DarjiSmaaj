@@ -121,13 +121,13 @@ const Navbar = () =>{
                                     </NavLink>
                                     <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <li>
-                                        <NavLink to='/#' className="dropdown-item" >New Request</NavLink>
+                                        <NavLink to='/new-request' className="dropdown-item" >New Request</NavLink>
                                     </li>
                                     <li>
-                                        <NavLink to='/#' className="dropdown-item" >Accepted Request</NavLink>
+                                        <NavLink to='/accepted-request' className="dropdown-item" >Accepted Request</NavLink>
                                     </li>
                                     <li>
-                                        <NavLink to='/#' className="dropdown-item" >Rejected Request</NavLink>
+                                        <NavLink to='/rejected-request' className="dropdown-item" >Rejected Request</NavLink>
                                     </li>
                                     </ul>
                                 </li>
