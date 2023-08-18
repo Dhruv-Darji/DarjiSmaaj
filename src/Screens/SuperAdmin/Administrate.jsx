@@ -155,7 +155,7 @@ const Administrate = () => {
         }
         else{
             if(window.confirm(`Are You Sure to assign ${user.SurName} ${user.MiddleName} As ${selectedRole.RoleName}`)){
-            axios.post('http://192.168.0.112:8080/change/assignRole',combinedData).then(
+            axios.post('http://192.168.0.112:8080/change/assignRole',combinedData,{timeout:25000}).then(
                 ()=>{
                     console.log("Role Updated successfuly");
                     showSuccessToast("Role Updated successfuly");
@@ -166,10 +166,18 @@ const Administrate = () => {
                         fetchDadminUser(userAuth.UserId);
                     } 
                 }
-            )
+            ).catch((e)=>{
+                if(e.response){
+                    showErrorToast(`${e.response.data}`);
+                  console.error('Error while Adding Village!',e.response.data);
+                }else{
+                  showErrorToast('Server Unreachable!');
+                }
+                setIsLoading(false);
+            });
         }
         else{
-            showErrorToast("Oops! Your nitification is blocked.");
+            showErrorToast("Oops! Your notification is blocked.");
             setIsLoading(false);
             console.log('You have blocked the notification of window.confirm')
         }}                    
@@ -190,7 +198,7 @@ const Administrate = () => {
         const combinedData ={AssignedPinCode,CurrentUserId,UserId,CurrentUserRoleId}
         
         if(window.confirm(`Are You confirm To Assign ${testnumber} to ${user.SurName} ${user.MiddleName}`)){
-            await axios.post('http://192.168.0.112:8080/change/admin/village',combinedData).then(
+            await axios.post('http://192.168.0.112:8080/change/admin/village',combinedData,{timeout:25000}).then(
             ()=>{
                 showSuccessToast("PinCode Successfully Assigned");
                 if(userAuth.RoleId===1){
