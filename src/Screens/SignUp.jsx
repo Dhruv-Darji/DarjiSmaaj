@@ -25,31 +25,74 @@ import Toast, { showSuccessToast,showErrorToast } from '../Components/Toast';
       ConfirmPassword:'',
       RoleName:'AuthUser',
     });
+    const [previewImage, setPreviewImage] = useState(null);
+    const [profileImage, setProfileImage] = useState(null);
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+    const handleImageChange = (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        setProfileImage(file)
+        const imageUrl = URL.createObjectURL(file);
+        setPreviewImage(imageUrl);
+      }
+    };
     
     const getSingleUser = (event) => {
       const { name, value } = event.target;
       setSingleUser({ ...singleUser, [name]: value });
     }
 
-    const handleSubmit = async (e) =>{
-      setIsLoading(true);
-      e.preventDefault();
-      console.log(singleUser);      
-      await axios.post('http://192.168.0.112:8080/createUser',singleUser).then(
-        ()=>{
-            showSuccessToast('Successfully Registered 🥰.');
-            setIsLoading(false);
-            navigate('/login');
+    const checkMissing = () =>{
+      const missignList = [];
+      Object.keys(singleUser).forEach((key)=>{
+        if(!singleUser[key]){
+          missignList.push(key);
         }
-      ).catch((e)=>{
-        setIsLoading(false);
-        if(e.response){          
-          showErrorToast(`${e.response.data}`);
-        console.error('Error while SignUp!',e.response.data);
-      }else{
-        showErrorToast('Oops! Server Unreachable.');
+      });
+      if(!profileImage){
+        missignList.push("Profile Image");
       }
-      }); 
+      return missignList;
+    }
+
+    const handleSubmit = async (e) =>{
+      const missingField = checkMissing();
+      if(missingField.length>0){
+        alert(`Please Fill ${missingField}`)
+      }
+      else if(singleUser.Password != singleUser.Password){
+        alert(`Oops! Password and ConfirmPassword didn't Match.`);
+      }
+      else{
+        setIsLoading(true);
+        const formData = new FormData();
+        formData.append('profileImage',profileImage);
+        Object.keys(singleUser).forEach((key)=>{
+          formData.append(key,singleUser[key])
+        });
+        console.log(formData);      
+          if(window.confirm(`Do you confirm to Register?`)){
+            await axios.post('http://192.168.0.112:8080/createUser',formData).then(
+            ()=>{
+                showSuccessToast('Successfully Registered 🥰.');
+                setIsLoading(false);
+                navigate('/login');
+            }
+          ).catch((e)=>{
+            setIsLoading(false);
+            if(e.response){          
+              showErrorToast(`${e.response.data}`);
+              console.error('Error while SignUp!',e.response.data);
+            }else{
+              showErrorToast('Oops! Server Unreachable.');
+            }
+          }); 
+        }else{
+          showErrorToast("Oops! Your windows notification is off.");
+          setIsLoading(false);
+        }
+      }
     }
       return(
           <>    
@@ -75,7 +118,32 @@ import Toast, { showSuccessToast,showErrorToast } from '../Components/Toast';
                       <div className="card">
                         <div className="card-body py-5 px-md-5">
                           <form>
-                          <div className="text-center"><h3 className="mb-5">Register</h3></div>                                              
+                          <div className="text-center"><h3 className="mb-5">Register</h3></div>
+                          <div className="text-center mb-4">
+                            <label htmlFor="profileImage" className="profile-image-label">
+                              {previewImage ? (
+                                <img                                
+                                  id="previewImage"
+                                  src={previewImage}
+                                  alt="Profile Preview"
+                                  style={{width: 150 , height:150}}
+                                  className="rounded-circle img-fluid change-curser"
+                                />
+                              ) : (
+                                <img src="https://img.freepik.com/free-vector/add-user-concept-illustration_114360-458.jpg?w=740&t=st=1692357502~exp=1692358102~hmac=7961fff36ae43ea83096d2f182d4b946407e7171ab88d9f0deb272ba55171ced"
+                                className="rounded-circle img-fluid change-curser" style={{width: 150}} />
+                              )}
+                              <input
+                                type="file"
+                                className="d-none"
+                                id="profileImage"
+                                name="profileImage"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                                required
+                              />
+                            </label>
+                          </div>                                             
                             <div className="row">
                               <div className="col-md-6 mb-4">
                                 <div className="form-outline">
@@ -140,8 +208,8 @@ import Toast, { showSuccessToast,showErrorToast } from '../Components/Toast';
                             </div>
 
                             <div className="form-outline mb-4">
-                                <input type="tel" id="typePhone" class="form-control" name="MobileNumber" value={singleUser.MobileNumber} onChange={getSingleUser} required/>
-                                <label class="form-label" for="typePhone">Phone number (WhatsApp Number)</label>
+                                <input type="tel" id="typePhone" className="form-control" name="MobileNumber" value={singleUser.MobileNumber} onChange={getSingleUser} required/>
+                                <label className="form-label" htmlFor="typePhone">Phone number (WhatsApp Number)</label>
                             </div>                              
                             
                             <div className="form-outline mb-4">
@@ -150,9 +218,15 @@ import Toast, { showSuccessToast,showErrorToast } from '../Components/Toast';
                             </div>
 
                           
-                            <div className="form-outline mb-4">
-                              <input type="password" id="form3Example4" name='Password' value={singleUser.Password} onChange={getSingleUser} className="form-control" required/>
+                            <div className="form-outline mb-4 d-flex">
+                              <input type={isPasswordVisible?"text":"password"} id="form3Example4" name='Password' value={singleUser.Password} onChange={getSingleUser} className="form-control" required/>
                               <label className="form-label" htmlFor="form3Example4">Password</label>
+                              <span
+                                className={`password-toggle ${isPasswordVisible ? "visible" : ""}`}
+                                onClick={()=>setIsPasswordVisible(!isPasswordVisible)}
+                              >
+                                {isPasswordVisible ? <i className="far fa-eye change-curser"></i> : <i className="far fa-eye-slash change-curser"></i>}
+                              </span>
                             </div>
                             
                             <div className="form-outline mb-4">
