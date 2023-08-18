@@ -8,7 +8,7 @@ const Auth = async () => {
 
     if (token) {
         try {
-            const response = await axios.get('http://localhost:8080/tokenRequest');
+            const response = await axios.get('http://192.168.0.112:8080/tokenRequest',{timeout:50000});
             if (response.data.status === 'token') {
                 const { UserId, RoleId, Email } = response.data;
                 return { UserId, RoleId, Email };

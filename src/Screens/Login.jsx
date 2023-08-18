@@ -35,7 +35,6 @@ const Login = () => {
 
   const passUser = async() =>{
     const { RoleId } = await Auth();
-    console.log(RoleId);
     if(RoleId===1 || RoleId===2 || RoleId===3){      
       navigate('/Dashboard');
     }
@@ -47,7 +46,7 @@ const Login = () => {
   const handleSubmit = async (e) =>{
     e.preventDefault();
     if(userAuth.RoleId === null && userAuth.UserId === null && userAuth.Email === null){
-      axios.post('http://localhost:8080/authenticate',fieldValue).then(
+      await axios.post('http://192.168.0.112:8080/authenticate',fieldValue).then(
         (response)=>{
           if(response.status===200){
             passUser();

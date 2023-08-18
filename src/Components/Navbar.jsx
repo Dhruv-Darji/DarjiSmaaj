@@ -21,7 +21,7 @@ const Navbar = () =>{
     const navigate = useNavigate();
 
     const handleLogOut = () =>{
-        axios.get('http://localhost:8080/logout').then(
+        axios.get('http://192.168.0.112:8080/logout').then(
             () =>{
                 window.location.reload();
             }

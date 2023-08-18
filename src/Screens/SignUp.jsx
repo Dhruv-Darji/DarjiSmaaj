@@ -35,7 +35,7 @@ import Toast, { showSuccessToast,showErrorToast } from '../Components/Toast';
       setIsLoading(true);
       e.preventDefault();
       console.log(singleUser);      
-      await axios.post('http://localhost:8080/createUser',singleUser).then(
+      await axios.post('http://192.168.0.112:8080/createUser',singleUser).then(
         ()=>{
             showSuccessToast('Successfully Registered 🥰.');
             setIsLoading(false);
