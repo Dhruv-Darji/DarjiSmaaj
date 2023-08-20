@@ -1,62 +1,139 @@
-import React, { useState } from 'react';
+import React,{ useState,useEffect } from "react";
+import Loading from "../../Components/Loading";
+import Auth from "../../Roles/Auth";
+import { MDBContainer,MDBDataTable} from "mdbreact";
+import Toast, { showSuccessToast,showErrorToast } from '../../Components/Toast';
+import axios from "axios";
+import DateFormater from "../../Components/DateFormater";
 
-const AcceptedRequest = () => {
-  const [previewImage, setPreviewImage] = useState(null);
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setPreviewImage(imageUrl);
+const AcceptedRequest = () =>{
+    const [isLoading,setIsLoading] = useState(true);
+    const [usersData,setUsersData] = useState([]);
+    const [userAuth,setUserAuth] = useState({
+        RoleId:'',
+        UserId:'',
+        Email:''
+    });
+
+    const getNewRequestData = async (UserId) =>{
+        await axios.get(
+            `http://192.168.0.112:8080/getProfile/administrate/Accepted/${UserId}`,
+            {timeout:20000}
+        ).then(
+            (response)=>{
+                if(response.status===200){
+                    setUsersData(response.data);
+                    setIsLoading(false)
+                }
+            }
+        ).catch((e)=>{
+            setIsLoading(false);
+            if(e.response){          
+                showErrorToast(`${e.response.data}`);
+                console.error('Error while addProfile!',e.response.data);
+            }else{
+                showErrorToast('Oops! Server Unreachable.');
+            }
+            setIsLoading(false);
+        });
     }
-  };
 
-  return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
-        <div className="col-md-6">
-          <div className="card shadow-lg">
-            <div className="card-body">
-              <div className="text-center mb-4">
-                <label htmlFor="profileImage" className="profile-image-label">
-                  {previewImage ? (
-                    <img
-                      id="previewImage"
-                      src={previewImage}
-                      alt="Profile Preview"
-                      className="profile-image"
-                    />
-                  ) : (
-                    <div className="profile-image-placeholder">
-                        <i class="fas fa-camera-retro"></i>
-                    </div>
-                  )}
-                  <input
-                    type="file"
-                    className="d-none"
-                    id="profileImage"
-                    name="profileImage"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    required
-                  />
-                </label>
+    useEffect(()=>{
+        const fetchData = async () =>{
+        const {RoleId,UserId,Email} = await Auth();
+        await getNewRequestData(UserId);
+        setUserAuth({RoleId,UserId,Email});                  
+    }
+    fetchData();             
+    },[]);
+
+    const columnAndRow = {
+        autowidth:true,
+        columns:[
+          {
+            label:'Index',
+            field:'Index',
+            sort:'asc'
+          },
+          {
+            label:'Name',
+            field:'Name',
+            sort:'asc'
+          },
+          {
+            label:'Date Of Birth',
+            field:'DOB',
+            sort:'asc'
+          },
+          {
+            label:'Gender',
+            field:'Gender',
+            sort:'asc'
+          },
+          {
+            label:'Profile Adding Date',
+            field:'WhenMade',
+            sort:'asc'
+          },
+          {
+            label:'Show',
+            field:'Show',
+            sort:'asc'
+          },
+        ],
+        rows:usersData.map((user,index)=>{       
+        
+          return {
+            Index: index+1,
+            Name: (
+              <div className="d-flex justify-content-start">
+              <div className="d-flex">
+              <img
+                      src="Images/Profile.jpeg"
+                      alt="profile"
+                      style={{ width: '45px', height: '45px' }}
+                      className="rounded-circle "
+                      />
+                  <div className="ms-3">
+                      <p className="fw-bold mb-1">{`${user.P_SurName} ${user.P_MiddleName}`}</p>
+                      <p className="text-muted mb-0">{`${user.P_Email}`}</p>
+                  </div>
               </div>
-              <h4 className="card-title mb-4">New User Registration</h4>
-              <form id="AcceptedRequest" encType="multipart/form-data">
-                {/* Other form fields */}
-                <div className="d-grid mt-4">
-                  <button type="submit" className="btn btn-primary btn-block">
-                    Register
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
+              </div>
+            ),
+            DOB: DateFormater(user.P_DOB),
+            Gender:user.P_Gender,
+            WhenMade:DateFormater(user.P_WhenMade),
+          }      
+        })  
+      }
+      
+    return(<>
+    <div>
+    <Toast/>
+    {isLoading?(<><Loading/></>):(
+        <>
+        <div className="row justify-content-center">
+            <div className="card text-center w-75 mt-4">
+            <MDBContainer>
+                <MDBDataTable
+                    striped
+                    responsive
+                    noBottomColumns
+                    data={columnAndRow}
+                    searching
+                    displayEntries={true}
+                    entries={10}
+                    paginationLabel={['previous','next']}
+                />
+            </MDBContainer>
+            </div> 
+        </div> 
+        </>
+    )}
     </div>
-  );
-};
+    </>);   
+}
 
 export default AcceptedRequest;

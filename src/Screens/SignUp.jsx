@@ -61,7 +61,7 @@ import Toast, { showSuccessToast,showErrorToast } from '../Components/Toast';
       if(missingField.length>0){
         alert(`Please Fill ${missingField}`)
       }
-      else if(singleUser.Password != singleUser.Password){
+      else if(singleUser.ConfirmPassword !== singleUser.Password){
         alert(`Oops! Password and ConfirmPassword didn't Match.`);
       }
       else{
@@ -131,7 +131,7 @@ import Toast, { showSuccessToast,showErrorToast } from '../Components/Toast';
                                 />
                               ) : (
                                 <img src="https://img.freepik.com/free-vector/add-user-concept-illustration_114360-458.jpg?w=740&t=st=1692357502~exp=1692358102~hmac=7961fff36ae43ea83096d2f182d4b946407e7171ab88d9f0deb272ba55171ced"
-                                className="rounded-circle img-fluid change-curser" style={{width: 150}} />
+                                className="rounded-circle img-fluid change-curser" alt="Your Profile" style={{width: 150}} />
                               )}
                               <input
                                 type="file"

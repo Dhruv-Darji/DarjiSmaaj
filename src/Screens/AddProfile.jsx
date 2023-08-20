@@ -1,10 +1,12 @@
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect} from "react";
 import Toast,{showErrorToast,showSuccessToast} from "../Components/Toast";
 import Loading from "../Components/Loading";
 import axios from "axios";
 import Auth from "../Roles/Auth";
+import { useNavigate } from "react-router-dom";
 
 const AddProfile = () => {
+  const navigate = useNavigate();
   const [isLoading,setIsLoading] = useState(false);
   const [biodataFile,setBiodataFile] = useState();
   const [profileFile,setProfileFile] = useState();
@@ -28,7 +30,7 @@ const AddProfile = () => {
     RoleId:'',
     UserId:'',
     Email:''
-  });
+  });  
   useEffect(()=>{
     const fetchData = async () =>{
         const {RoleId,UserId,Email} = await Auth();
@@ -108,6 +110,7 @@ const AddProfile = () => {
                     if(response.status===200){
                         showSuccessToast(`${response.data}`);
                         clearForm();
+                        navigate('/');
                         setIsLoading(false);
                     }
                 }
@@ -199,7 +202,7 @@ const AddProfile = () => {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="uploadPhoto" className="form-label">Upload Photo:</label>
-                                <input type="file" onChange={(event)=>{setProfileFile(event.target.files[0])}} className="form-control" id="uploadPhoto"/>
+                                <input type="file" accept="image/*" onChange={(event)=>{setProfileFile(event.target.files[0])}} className="form-control" id="uploadPhoto"/>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="uploadPhoto" className="form-label">Upload Your Biodata:</label>

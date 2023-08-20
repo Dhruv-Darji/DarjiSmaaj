@@ -176,7 +176,7 @@ const AdminList = () =>{
             <Toast/>
             {isLoading?(<Loading/>):(              
                 <div className="row justify-content-center">
-                    <div className="card text-center w-75 mt-4">
+                  <div className="card text-center w-75 mt-4">
                     <MDBContainer>
                         <MDBDataTable
                             striped
@@ -189,8 +189,8 @@ const AdminList = () =>{
                             paginationLabel={['previous','next']}
                         />
                     </MDBContainer>
-                    </div> 
-                    </div> 
+                  </div> 
+                </div> 
             )}
             </div>
         </>

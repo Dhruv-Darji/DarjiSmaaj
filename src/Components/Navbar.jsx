@@ -107,7 +107,7 @@ const Navbar = () =>{
                     })()
                 }
                 {(()=>{
-                    if(userAuth.RoleId ===2 || userAuth.RoleId===3){
+                    if(userAuth.RoleId===1 || userAuth.RoleId ===2 || userAuth.RoleId===3){
                             return(
                                 <li className="nav-item dropdown">
                                     <NavLink to='/#'
