@@ -106,7 +106,7 @@ const AddProfile = () => {
                 formData,
                 {timeout:30000}
             ).then(
-                (response)=>{                
+                (response)=>{   
                     if(response.status===200){
                         showSuccessToast(`${response.data}`);
                         clearForm();

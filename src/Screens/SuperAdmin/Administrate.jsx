@@ -6,6 +6,7 @@ import Toast, { showSuccessToast,showErrorToast } from '../../Components/Toast';
 import axios from "axios";
 import DateFormater from "../../Components/DateFormater";
 import Loading from "../../Components/Loading";
+import ImageUrlGiver from "../../Components/ImageUrlGiver";
 
 const Administrate = () => {
     const navigate = useNavigate();
@@ -40,7 +41,6 @@ const Administrate = () => {
         });
     }
     const fetchDadminUser = async (UserId) =>{
-        console.log("current user userId:",UserId);
         await axios.post("http://192.168.0.112:8080/list/districtUser",{UserId:UserId}).then(
             (respons)=>{
                 const usersdata = respons.data;
@@ -61,7 +61,6 @@ const Administrate = () => {
         const fetchData = async () => {
             const { RoleId, UserId, Email } = await Auth();
             setUserAuth({ RoleId, UserId, Email });
-            console.log("This is the RoleId:",RoleId);
             if(RoleId===1){                
                 fetchAdminUser();
             }
@@ -116,7 +115,7 @@ const Administrate = () => {
                     <div className="d-flex justify-content-start">
                     <div className="d-flex">
                     <img
-                            src="Images/Profile.jpeg"
+                            src={ImageUrlGiver(user.ProfileImagePath)}
                             alt="profile"
                             style={{ width: '45px', height: '45px' }}
                             className="rounded-circle "
@@ -247,12 +246,12 @@ const Administrate = () => {
                 <div className="modal-body">
                 <div className="card-body text-center">
             <div className="mt-3 mb-4">
-              <img src="Images/Profile.jpeg"
+              <img src={ImageUrlGiver(user.ProfileImagePath)}
                 alt="test"
                 className="rounded-circle img-fluid w-25"/>
             </div>
             <h4 className="mb-2">{`${user.SurName} ${user.MiddleName} ${user.FatherName}`}</h4>
-            <p className="text-muted mb-4">
+            <p className="text-muted">
                 {(()=>{
                     if(user.RoleId===1){
                         return(
@@ -277,9 +276,11 @@ const Administrate = () => {
                 <span className="mx-2">|</span> <a
                     href="#!">{`${user.Email}`}</a>
                 <span className="mx-2">|</span>
+                <div className="d-md">
                 {`${user.MobileNumber}`} 
                 <span className="mx-2">|</span>
-                {`${DateFormater(user.DOB)}`}                
+                {`${DateFormater(user.DOB)}`}
+                </div>
             </p>            
             <button type="button" className="btn btn-primary btn-rounded btn-lg">
               Message now
@@ -412,13 +413,13 @@ const Administrate = () => {
                                 aria-hidden="true"
                                 key={index}
                             >
-                                <div className="modal-dialog" style={{ maxWidth: "50%" }}>
+                                <div className="modal-dialog">
                                     <ProfileModal user={user} />
                                 </div>
                             </div>
                         ))}
                         <div className="row justify-content-center">
-                            <div className="card text-center w-75 mt-4">
+                            <div className="card text-start w-75 mt-4">
                                 <MDBContainer>
                                     <MDBDataTable
                                         striped

@@ -6,6 +6,7 @@ import Auth from "../../Roles/Auth";
 import { MDBContainer,MDBDataTable} from "mdbreact";
 import axios from "axios";
 import DateFormater from "../../Components/DateFormater";
+import ImageUrlGiver from "../../Components/ImageUrlGiver";
 
 const DistrictAdminList = () => {
   const navigate = useNavigate();
@@ -137,7 +138,7 @@ const DistrictAdminList = () => {
           <div className="d-flex justify-content-start">
           <div className="d-flex">
           <img
-                  src="Images/Profile.jpeg"
+                  src={ImageUrlGiver(user.ProfileImagePath)}
                   alt="profile"
                   style={{ width: '45px', height: '45px' }}
                   className="rounded-circle "
@@ -170,7 +171,7 @@ const DistrictAdminList = () => {
     <Toast/>
       {isLoading?(<Loading/>):(              
         <div className="row justify-content-center">
-            <div className="card text-center w-75 mt-4">
+            <div className="card text-start w-75 mt-4">
             <MDBContainer>
                 <MDBDataTable
                     striped
