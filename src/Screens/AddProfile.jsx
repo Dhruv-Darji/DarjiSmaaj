@@ -116,7 +116,6 @@ const AddProfile = () => {
                 }
             ).catch((e)=>{
                 console.log("Error:",e);
-                setIsLoading(false);
                 if(e.response){          
                     showErrorToast(`${e.response.data}`);
                     console.error('Error while addProfile!',e.response.data);

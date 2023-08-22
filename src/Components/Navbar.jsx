@@ -2,18 +2,42 @@ import React, { useEffect, useState } from "react"
 import Auth from "../Roles/Auth";
 import { useNavigate ,NavLink } from "react-router-dom";
 import axios from "axios";
+import { showErrorToast } from "./Toast";
+import ImageUrlGiver from "./ImageUrlGiver";
  
 const Navbar = () =>{
-    
+    const [profilePath,setProfilePath] = useState('');
     const [userAuth,setUserAuth] = useState({
         RoleId:'',
         UserId:'',
         Email:''
       });
+
+
+    const getUserProfile = async (UserId) =>{
+        await axios.get(
+            `http://localhost:8080/getProfilePath/${UserId}`
+        ).then(
+            (response)=>{
+                setProfilePath(response.data[0].ProfileImagePath)
+            }
+        ).catch(
+            (e)=>{
+                console.log("Error:",e);
+                if(e.response){          
+                    showErrorToast(`${e.response.data}`);
+                    console.error('Error while getUserProfile!',e.response.data);
+                }else{
+                    showErrorToast('Oops! Server Unreachable.');
+                }
+            }
+        );
+    }
       useEffect(()=>{
         const fetchData = async () =>{
             const {RoleId,UserId,Email} = await Auth();
-            setUserAuth({RoleId,UserId,Email});                  
+            setUserAuth({RoleId,UserId,Email});
+            await getUserProfile(UserId);                  
         }
         fetchData();             
       },[]);
@@ -152,10 +176,8 @@ const Navbar = () =>{
             </div>
             
             <div className="d-flex align-items-center">
-    
-
             
-            <div className="dropdown">
+            <div className="nav-item dropdown">
                 <NavLink to='/#'
                 className="text-reset me-3 dropdown-toggle hidden-arrow"
                 
@@ -196,10 +218,11 @@ const Navbar = () =>{
                 aria-expanded="false"
                 >
                 <img
-                    src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+                    src={ImageUrlGiver(profilePath)}
                     className="rounded-circle"
-                    height="25"
-                    alt="Black and White Portrait of NavLink Man"
+                    height="30"
+                    width='30'
+                    alt="Error"
                     loading="lazy"
                 />
                 </NavLink>
