@@ -46,7 +46,7 @@ const CommonRequestPage = ({whichDataWant}) =>{
         setIsLoading(true);
         if(window.confirm(`Do You Confirm That To change Status --> ${changeStatusTo}`)){
             await axios.post(
-                'http://localhost:8080/change_Status/Profile_Request',
+                'http://192.168.0.112:8080/change_Status/Profile_Request',
                 {
                     ProfileId:ProfileId,
                     ChangeRoleTo:changeStatusTo,

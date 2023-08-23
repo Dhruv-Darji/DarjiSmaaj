@@ -16,7 +16,7 @@ const Navbar = () =>{
 
     const getUserProfile = async (UserId) =>{
         await axios.get(
-            `http://localhost:8080/getProfilePath/${UserId}`
+            `http://192.168.0.112:8080/getProfilePath/${UserId}`
         ).then(
             (response)=>{
                 setProfilePath(response.data[0].ProfileImagePath)
@@ -37,7 +37,9 @@ const Navbar = () =>{
         const fetchData = async () =>{
             const {RoleId,UserId,Email} = await Auth();
             setUserAuth({RoleId,UserId,Email});
-            await getUserProfile(UserId);                  
+            if([1,2,3,4].includes(RoleId)){
+                await getUserProfile(UserId);
+            }                  
         }
         fetchData();             
       },[]);
@@ -51,6 +53,14 @@ const Navbar = () =>{
             }
         ).catch((err)=>console.log('Logout error:',err));
     }
+
+    const scrollToSection = (sectionId) => {
+        const section = document.querySelector(sectionId);
+        if (section) {
+          section.scrollIntoView({ behavior: 'smooth' });
+        }
+      };
+      
 
     return(
         <>       
@@ -90,12 +100,15 @@ const Navbar = () =>{
                     }else{
                         return(
                         <li className="nav-item">
-                        <NavLink to='/' className="nav-link" >Home</NavLink>
+                        <NavLink onClick={() => scrollToSection('#home_section')} to='/#home_section' className="nav-link" >Home</NavLink>
                         </li>
                         );
                     }
                 })()
                 }
+                <li className="nav-item">
+                    <NavLink to='/all-profiles' className="nav-link">All Profiles</NavLink>
+                </li>
                 {
                     (()=>{
                         if(userAuth.RoleId ===1 || userAuth.RoleId ===2){

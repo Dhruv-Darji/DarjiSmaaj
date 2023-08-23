@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import Home from './Home';
 import Login from './Login';
 import Error from "../Components/Error";
+import Footer from "../Components/Footer";
 import Navbar from "../Components/Navbar";
 import SignUp from "./SignUp";
 import AboutUs from "./AboutUs";
@@ -11,6 +12,7 @@ import Dashboard from "./Dashboard";
 import ContactUs from "./ContactUs";
 import NewRequest from "./Admin/NewRequest";
 import AddProfile from "./AddProfile";
+import AllProfiles from "./AllProfiles";
 import Administrate from "./SuperAdmin/Administrate";
 import AcceptedRequest from "./Admin/AcceptedRequest";
 import RejectedRequest from "./Admin/RejectedRequest";
@@ -35,12 +37,14 @@ const App = () => {
                 <Route exact path="/new-request" element={<NewRequest/>}/>
                 <Route exact path="/contact-us" element={<ContactUs/>}/>
                 <Route exact path="/addProfile" element={<AddProfile/>}/>
+                <Route exact path="/all-profiles" element={<AllProfiles/>} />
                 <Route exact path="/Administrate" element={<Administrate/>}/> 
                 <Route exact path="/accepted-request" element={<AcceptedRequest/>}/>
                 <Route exact path="/rejected-request" element={<RejectedRequest/>} />
                 <Route exact path="/DistrictAdminList" element={<DistrictAdminList/>} />
                 <Route path="*" element={<Home/>}/>
             </Routes>
+            {!shouldHideNavbar && <Footer/>}
         </>
     );
 }
