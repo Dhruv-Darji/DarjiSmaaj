@@ -189,35 +189,12 @@ const Navbar = () =>{
             </div>
             
             <div className="d-flex align-items-center">
-            
-            <div className="nav-item dropdown">
-                <NavLink to='/#'
-                className="text-reset me-3 dropdown-toggle hidden-arrow"
-                
-                id="navbarDropdownMenuLink"
-                role="button"
-                data-mdb-toggle="dropdown"
-                aria-expanded="false"
-                >
-                <i className="fas fa-bell"></i>
-                <span className="badge rounded-pill badge-notification bg-danger">1</span>
-                </NavLink>
-                <ul
-                className="dropdown-menu dropdown-menu-end"
-                aria-labelledby="navbarDropdownMenuLink"
-                >
-                <li>
-                    <NavLink to='/#' className="dropdown-item" >Some news</NavLink>
-                </li>
-                <li>
-                    <NavLink to='/#' className="dropdown-item" >Another news</NavLink>
-                </li>
-                <li>
-                    <NavLink to='/#' className="dropdown-item" >Something else here</NavLink>
-                </li>
-                </ul>
-            </div>
-            {userAuth.RoleId === null && userAuth.UserId === null && userAuth.Email === null ?(
+
+            <NavLink to='/#' className="navbar-brand mt-lg-0">
+            <i class="fas fa-cart-flatbed text-muted"></i>
+            </NavLink>
+                        
+            {userAuth.UserId === null?(
             <button type="button" onClick={()=>{navigate('/login')}} className="btn btn-light" data-mdb-ripple-color="dark">
                 LogIn
             </button>

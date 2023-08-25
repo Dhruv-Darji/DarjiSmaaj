@@ -11,4 +11,20 @@ const DateFormater = (userDate) =>{
       
       return `${day}/${monthNames[month]}/${year}`
 }
+
+export const AgeCalculator = (BirthDate) =>{
+  if(BirthDate){
+    const birthdateObj = new Date(BirthDate);
+      const currentDate = new Date();
+
+      const ageInMilliseconds = currentDate - birthdateObj;
+      const ageInYears = Math.floor(ageInMilliseconds / (365 * 24 * 60 * 60 * 1000));
+
+      return ageInYears;
+  }else{
+    console.log('Wrong Birthdate:',BirthDate);
+    return null;
+  }
+}
+
 export default DateFormater;
