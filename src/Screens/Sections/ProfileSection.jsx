@@ -35,7 +35,7 @@ const ProfileSection = () => {
     return (
       <div className={isActive ? "carousel-item col-md-3 mb-4 active" : "carousel-item col-md-3 mb-4"}>
         <div className="w-200 mx-auto mb-4">
-          <img src={ImageUrlGiver(profile.ProfileImagePath)} className="z-depth-1 rounded-circle img-fluid" alt="sample image" style={{height:'300px',width:'250px'}}/>
+          <img src={ImageUrlGiver(profile.ProfileImagePath)} className="z-depth-1 rounded-circle img-fluid" alt="Error" style={{height:'300px',width:'250px'}}/>
         </div>
         <h4 className="font-weight-bold">{profile.P_SurName} {profile.P_MiddleName} {profile.P_FatherName}</h4>
         <h5 className="text-muted">{DateFormater(profile.P_DOB)}</h5>

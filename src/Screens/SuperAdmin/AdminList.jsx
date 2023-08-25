@@ -138,7 +138,7 @@ const AdminList = () =>{
               <div className="d-flex justify-content-start">
               <div className="d-flex">
               <img
-                      src={ImageUrlGiver(user.ProfileImagePath)}
+                      src={ImageUrlGiver(user.ProfilePath)}
                       alt="profile"
                       style={{ width: '45px', height: '45px' }}
                       className="rounded-circle "

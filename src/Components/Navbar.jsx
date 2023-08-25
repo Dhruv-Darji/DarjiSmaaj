@@ -19,7 +19,7 @@ const Navbar = () =>{
             `http://192.168.0.112:8080/getProfilePath/${UserId}`
         ).then(
             (response)=>{
-                setProfilePath(response.data[0].ProfileImagePath)
+                setProfilePath(response.data[0].ProfilePath)
             }
         ).catch(
             (e)=>{

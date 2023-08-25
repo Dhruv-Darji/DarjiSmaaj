@@ -115,7 +115,7 @@ const Administrate = () => {
                     <div className="d-flex justify-content-start">
                     <div className="d-flex">
                     <img
-                            src={ImageUrlGiver(user.ProfileImagePath)}
+                            src={ImageUrlGiver(user.ProfilePath)}
                             alt="profile"
                             style={{ width: '45px', height: '45px' }}
                             className="rounded-circle "
@@ -246,7 +246,7 @@ const Administrate = () => {
                 <div className="modal-body">
                 <div className="card-body text-center">
             <div className="mt-3 mb-4">
-              <img src={ImageUrlGiver(user.ProfileImagePath)}
+              <img src={ImageUrlGiver(user.ProfilePath)}
                 alt="test"
                 className="rounded-circle img-fluid w-25"/>
             </div>
@@ -348,16 +348,16 @@ const Administrate = () => {
                     if(inputCheck===false){if(!selectedRole.RoleId){if(userAuth.RoleId===1){
                         return(
                             <p>Make him{" "}
-                            <span change-curser onClick={()=>setSelectedRole({RoleId:2,RoleName:'DistrictAdmin'})} className="badge badge-primary rounded-pill d-inline">@DistrictAdmin</span>
+                            <span onClick={()=>setSelectedRole({RoleId:2,RoleName:'DistrictAdmin'})} className="change-curser badge badge-primary rounded-pill d-inline">@DistrictAdmin</span>
                             {" "}or{" "}
-                            <span change-curser onClick={()=>setSelectedRole({RoleId:3,RoleName:'Admin'})} className="badge badge-warning rounded-pill d-inline">@Admin</span>                            
+                            <span onClick={()=>setSelectedRole({RoleId:3,RoleName:'Admin'})} className="change-curser badge badge-warning rounded-pill d-inline">@Admin</span>                            
                             </p>
                         );
                     }
                     if(userAuth.RoleId===2 && user.RoleId===4){
                         return(
                             <p>Make him{" "}                            
-                            <span change-curser onClick={()=>setSelectedRole({RoleId:3,RoleName:'Admin'})} className="badge badge-warning rounded-pill d-inline">@Admin</span>                            
+                            <span onClick={()=>setSelectedRole({RoleId:3,RoleName:'Admin'})} className="change-curser badge badge-warning rounded-pill d-inline">@Admin</span>                            
                             </p>
                         );                        
                     }}
