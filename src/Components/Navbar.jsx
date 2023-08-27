@@ -191,7 +191,7 @@ const Navbar = () =>{
             <div className="d-flex align-items-center">
 
             <NavLink to='/#' className="navbar-brand mt-lg-0">
-            <i class="fas fa-cart-flatbed text-muted"></i>
+            <i className="fas fa-cart-flatbed text-muted"></i>
             </NavLink>
                         
             {userAuth.UserId === null?(

@@ -8,16 +8,26 @@ import axios from "axios";
 
 const AllProfiles = () =>{
     const [isLoading,setIsLoading] = useState(true);
+    const [applyFiltersClicked, setApplyFiltersClicked] = useState(false);
     const [allProfiles,setAllProfiles] = useState();
     const [userAuth,setUserAuth] = useState({
         RoleId:'',
         UserId:'',
         Email:''
       });
+    const [filterData,setFilterData] = useState({
+        genderFilter:'',
+        salaryFilter:'0',
+        ageFilter:'18',
+        employeeFilter:'',
+    });
 
     const fetchAllProfile = async () =>{
+        setIsLoading(true);
+        console.log('filterData:',filterData)
+        const queryParams = new URLSearchParams(filterData);
         await axios.get(
-            `http://192.168.0.112:8080/allProfiles/Accepted`,
+            `http://192.168.0.112:8080/allProfiles/Accepted?${queryParams}`,
             {timeout:2000}
         )
         .then((response)=>{
@@ -43,8 +53,8 @@ const AllProfiles = () =>{
             fetchAllProfile();
             setUserAuth({RoleId,UserId,Email});                  
         }
-        fetchData();             
-      },[]);
+        fetchData();         
+      },[applyFiltersClicked]);
 
     return(
         <>
@@ -55,7 +65,7 @@ const AllProfiles = () =>{
             ):
             (
                 <>
-                    <SearchBar/>
+                    <SearchBar filterData={filterData} setFilterData={setFilterData} applyFiltersClicked={applyFiltersClicked} setApplyFiltersClicked={setApplyFiltersClicked} />
                     <AllProfilesCard allProfiles={allProfiles} userAuth={userAuth}/>
                 </>
             )}

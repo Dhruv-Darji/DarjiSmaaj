@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import ImageUrlGiver from "../../Components/ImageUrlGiver";
 import DateFormater, { AgeCalculator } from "../../Components/DateFormater";
 import { NavLink } from "react-router-dom";
+import DownloadFile from "../../Components/DownloadFile";
+import { showErrorToast } from "../../Components/Toast";
 
 const AllProfilesCard = ({allProfiles,userAuth}) =>{
     const [currentPage, setCurrentPage] = useState(1);
@@ -12,7 +14,6 @@ const AllProfilesCard = ({allProfiles,userAuth}) =>{
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber);
       };
-    const [expanded, setExpanded] = useState(false);
 
     const RowsCode = ({heading,bodyCode,textPosition}) =>{
         return (
@@ -53,23 +54,23 @@ const AllProfilesCard = ({allProfiles,userAuth}) =>{
                       <ul className="list-group list-group-flush rounded-3">
                         <li className="list-group-item d-flex justify-content-between align-items-center p-3">                          
                           <p className="mb-0">Gender:</p>
-                          <p className="mb-0">{profile.P_Gender}</p>
+                          <p className="mb-0 text-muted">{profile.P_Gender}</p>
                         </li>
                         <li className="list-group-item d-flex justify-content-between align-items-center p-3">                          
                           <p className="mb-0">Date Of Birth:</p>
-                          <p className="mb-0">{DateFormater(profile.P_DOB)}</p>
+                          <p className="mb-0 text-muted">{DateFormater(profile.P_DOB)}</p>
                         </li>
                         <li className="list-group-item d-flex justify-content-between align-items-center p-3">                          
                           <p className="mb-0">Living With Family?</p>
-                          <p className="mb-0">{profile.LivingWithFamily}</p>
+                          <p className="mb-0 text-muted">{profile.LivingWithFamily}</p>
                         </li>
                         <li className="list-group-item d-flex justify-content-between align-items-center p-3">                          
                           <p className="mb-0">Age:</p>
-                          <p className="mb-0">{AgeCalculator(profile.P_DOB)} Years</p>
+                          <p className="mb-0 text-muted">{AgeCalculator(profile.P_DOB)} Years</p>
                         </li>
                         <li className="list-group-item d-flex justify-content-between align-items-center p-3">                          
                           <p className="mb-0">Whene Biodata Added?</p>
-                          <p className="mb-0">{DateFormater(profile.P_WhenMade)}</p>
+                          <p className="mb-0 text-muted">{DateFormater(profile.P_WhenMade)}</p>
                         </li>
                       </ul>
                     </div>
@@ -102,17 +103,33 @@ const AllProfilesCard = ({allProfiles,userAuth}) =>{
                           </p>
                           <ul className="list-group list-group-flush rounded-3">
                               <li className="list-group-item d-flex justify-content-between align-items-center p-3">                          
-                                <p className="mb-0">Education:</p>
-                                <p className="mb-0">{profile.HigherEducation}</p>
+                                <p className="mb-0"><i className="fas fa-graduation-cap text-primary"></i>{" "}Education:</p>
+                                <p className="mb-0 text-muted">{profile.HigherEducation}</p>
                               </li>
                               <li className="list-group-item d-flex justify-content-between align-items-center p-3">                          
-                                <p className="mb-0">Employment:</p>
-                                <p className="mb-0">{profile.EmloyeeIn}</p>
+                                <p className="mb-0"><i className="fas fa-user-tie text-warning"></i>{" "}Employment:</p>
+                                <p className="mb-0 text-muted">{profile.EmloyeeIn}</p>
                               </li>
                               <li className="list-group-item d-flex justify-content-between align-items-center p-3">                          
-                                <p className="mb-0">Annual Income:</p>
-                                <p className="mb-0">{profile.AnnualIncome}</p>
+                                <p className="mb-0"><i className="fas fa-hand-holding-dollar text-success"></i>{" "}Annual Income:</p>
+                                <p className="mb-0 text-muted">{profile.AnnualIncome}</p>
                               </li>
+                              <li className="list-group-item d-flex justify-content-between align-items-center p-3">                          
+                                <p className="mb-0"><i className="fas fa-address-card text-info"></i>{" "}BioData:</p>
+                                <p className="mb-0 text-muted">
+                                <button onClick={async ()=>await DownloadFile(profile.BiodataFilePath)} type="button" className="btn-sm btn btn-secondary btn-floating">
+                                    <i className="fas fa-download"></i>
+                                </button>
+                                </p>
+                              </li>
+                              {profile.ResumeFilePath?(<li className="list-group-item d-flex justify-content-between align-items-center p-3">                          
+                                <p className="mb-0"><i className="fas fa-file-invoice text-danger"></i>{" "}Resume:</p>
+                                <p className="mb-0 text-muted">
+                                <button onClick={async ()=>await DownloadFile(profile.ResumeFilePath)} type="button" className="btn-sm btn btn-secondary btn-floating">
+                                    <i className="fas fa-download"></i>
+                                </button>
+                                </p>
+                              </li>):(<></>)}
                           </ul>
                         </div>
                       </div>
@@ -124,17 +141,16 @@ const AllProfilesCard = ({allProfiles,userAuth}) =>{
                           Description
                           </p>
                           <NavLink
-                            class="btn btn-primary"
-                            type="button"
+                            className="text-primary"
                             data-mdb-toggle="collapse"
                             data-mdb-target="#collapseExample"
                             aria-expanded="false"
                             aria-controls="collapseExample"
                           >
-                          👉 Full Detail
+                          <span role="img" aria-label="righ-hand arrow">👉</span> Full Detail
                           </NavLink>
 
-                          <div class="collapse mt-3" id="collapseExample">
+                          <div className="collapse mt-3 text-muted" id="collapseExample">
                             {profile.Discription}
                           </div>
                         </div>
@@ -185,10 +201,15 @@ const AllProfilesCard = ({allProfiles,userAuth}) =>{
                                     <span className="mx-2 text-dark">|</span>
                                     Pargana:{profile.Pargana}
                                     </p>
-                                    <h6 className="text-muted">Done {profile.HigherEducation} & currently {profile.EmloyeeIn} with {profile.AnnualIncome} salary</h6>
+                                    <h6 className="text-muted mb-4">Done {profile.HigherEducation} & currently {profile.EmloyeeIn} with {profile.AnnualIncome} salary</h6>
+                                    {userAuth.UserId?(
                                     <button type="button" className="btn btn-primary" data-mdb-toggle="modal" data-mdb-target={`#exampleModal-${index}`}>
                                       Show Profile
-                                    </button>
+                                    </button>):
+                                    (<button onClick={()=>showErrorToast('Oops! First you have to login')} type="button" className="btn btn-primary">
+                                      Show Profile
+                                    </button>)
+                                    }
                                 </div>
                               </div>
                             </div>
