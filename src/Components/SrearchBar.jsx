@@ -94,7 +94,7 @@ const SearchBar = ({filterData,setFilterData,applyFiltersClicked,setApplyFilters
                 {/* Age Range */}
                 <div className="mb-3">
                 <label htmlFor="ageRange" className="form-label">
-                    Age Range: {filterData.ageFilter} Years
+                    Age Belove: {filterData.ageFilter} Years
                 </label>
                 <input
                     type="range"
