@@ -10,6 +10,7 @@ const AllProfiles = () =>{
     const [isLoading,setIsLoading] = useState(true);
     const [applyFiltersClicked, setApplyFiltersClicked] = useState(false);
     const [allProfiles,setAllProfiles] = useState();
+    const [searchedProfiles,setSearchedProfiles] = useState([]);
     const [userAuth,setUserAuth] = useState({
         RoleId:'',
         UserId:'',
@@ -33,6 +34,7 @@ const AllProfiles = () =>{
         .then((response)=>{
             if(response.data){
                 setAllProfiles(response.data);
+                setSearchedProfiles(response.data);
                 setIsLoading(false);
             }
         })
@@ -65,8 +67,15 @@ const AllProfiles = () =>{
             ):
             (
                 <>
-                    <SearchBar filterData={filterData} setFilterData={setFilterData} applyFiltersClicked={applyFiltersClicked} setApplyFiltersClicked={setApplyFiltersClicked} />
-                    <AllProfilesCard allProfiles={allProfiles} userAuth={userAuth}/>
+                    <SearchBar 
+                    filterData={filterData} 
+                    setFilterData={setFilterData} 
+                    applyFiltersClicked={applyFiltersClicked} 
+                    setApplyFiltersClicked={setApplyFiltersClicked} 
+                    allProfiles={allProfiles}
+                    setSearchedProfiles={setSearchedProfiles}
+                    />
+                    <AllProfilesCard allProfiles={searchedProfiles} userAuth={userAuth}/>
                 </>
             )}
             </div>

@@ -189,8 +189,8 @@ const Navbar = () =>{
             </div>
             
             <div className="d-flex align-items-center">
-
-            <NavLink to='/#' className="navbar-brand mt-lg-0">
+            
+            <NavLink to='/profile-cart' className="navbar-brand mt-lg-0">
             <i className="fas fa-cart-flatbed text-muted"></i>
             </NavLink>
                         

@@ -12,6 +12,7 @@ import Dashboard from "./Dashboard";
 import ContactUs from "./ContactUs";
 import NewRequest from "./Admin/NewRequest";
 import AddProfile from "./AddProfile";
+import ProfileCart from "./ProfileCart";
 import AllProfiles from "./AllProfiles";
 import Administrate from "./SuperAdmin/Administrate";
 import AcceptedRequest from "./Admin/AcceptedRequest";
@@ -37,6 +38,7 @@ const App = () => {
                 <Route exact path="/new-request" element={<NewRequest/>}/>
                 <Route exact path="/contact-us" element={<ContactUs/>}/>
                 <Route exact path="/addProfile" element={<AddProfile/>}/>
+                <Route exact path="/profile-cart" element={<ProfileCart/>} />
                 <Route exact path="/all-profiles" element={<AllProfiles/>} />
                 <Route exact path="/Administrate" element={<Administrate/>}/> 
                 <Route exact path="/accepted-request" element={<AcceptedRequest/>}/>

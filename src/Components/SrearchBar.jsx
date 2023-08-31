@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { showSuccessToast } from "./Toast";
 
-const SearchBar = ({filterData,setFilterData,applyFiltersClicked,setApplyFiltersClicked}) =>{
+const SearchBar = ({filterData,setFilterData,applyFiltersClicked,setApplyFiltersClicked,allProfiles,setSearchedProfiles}) =>{
+
+  const [searchText, setsearchText] = useState('');
 
   const getFilterData = (event) => {
     const { name, value } = event.target;
@@ -24,9 +26,30 @@ const SearchBar = ({filterData,setFilterData,applyFiltersClicked,setApplyFilters
       });
   }
 
+  const searchCall = (e) => {
+    const searchText = e.target.value;
+    setsearchText(searchText);
+    if (searchText === "") {
+      setSearchedProfiles(allProfiles);
+    } else {
+      const filtered = allProfiles.filter((profile) => {
+        const name = `${profile.P_SurName} ${profile.P_MiddleName} ${profile.P_FatherName}`.toLowerCase();
+        const address = `${profile.Address} ${profile.Native} ${profile.Village} ${profile.PinCode}`.toLowerCase();
+        const pargana = profile.Pargana.toLowerCase();
+        return (
+          name.includes(searchText.toLowerCase()) ||
+          address.includes(searchText.toLowerCase()) ||
+          pargana.includes(searchText.toLowerCase())
+        );
+      });
+      setSearchedProfiles(filtered);
+    }
+  }
+  
+
     return(
         <div className="input-group p-4">
-            <input type="search" className="form-control rounded" placeholder="Search By Name,Village,Pargana" aria-label="Search" aria-describedby="search-addon" />
+            <input value={searchText} onChange={searchCall} type="search" className="form-control rounded" placeholder="Search By Name,Village,Pargana" aria-label="Search" aria-describedby="search-addon" />
             <button 
             className="btn btn-secondary dropdown-toggle"
             type="button"
