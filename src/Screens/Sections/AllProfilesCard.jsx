@@ -3,9 +3,10 @@ import ImageUrlGiver from "../../Components/ImageUrlGiver";
 import DateFormater, { AgeCalculator } from "../../Components/DateFormater";
 import { NavLink } from "react-router-dom";
 import DownloadFile from "../../Components/DownloadFile";
-import { showErrorToast } from "../../Components/Toast";
+import { showErrorToast, showSuccessToast } from "../../Components/Toast";
+import axios from "axios";
 
-const AllProfilesCard = ({allProfiles,userAuth}) =>{
+const AllProfilesCard = ({headingText,discriptionText,whereUsed,allProfiles,userAuth}) =>{
     const [currentPage, setCurrentPage] = useState(1);
     const profilesPerPage = 6;
     const indexOfLastProfile = currentPage * profilesPerPage;
@@ -28,13 +29,37 @@ const AllProfilesCard = ({allProfiles,userAuth}) =>{
         );
     }
 
+    const saveProfileInCart = async (profile) =>{      
+      await axios.post(
+        'http://192.168.0.112:8080/profileCart/addToCart',
+        {
+          UserId:userAuth.UserId,
+          ProfileId:profile.ProfileId
+        },
+        {timeout:20000}
+      ).then(
+        (response)=>{
+          if(response.status === 200){
+            showSuccessToast(`${profile.P_MiddleName}'s Profile Added To Cart Successfully 👍.`);
+          }
+        }
+      ).catch((e)=>{
+        if(e.response){          
+          showErrorToast(`${e.response.data}`);
+          console.error('Error while allProfile!',e.response.data);
+        }else{
+            showErrorToast('Oops! Server Unreachable.');
+        }
+      });
+    }
+
     const ModalCard = ({profile,index}) =>{
       return(
         <div className="modal fade" key={index} id={`exampleModal-${index}`} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-xl">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
+              <h5 className="modal-title" id="exampleModalLabel"><span className="text-primary font-italic me-1">{`${profile.P_MiddleName}'s`}</span> Profile</h5>
               <button type="button" className="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
@@ -164,8 +189,11 @@ const AllProfilesCard = ({allProfiles,userAuth}) =>{
             
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
-              <button type="button" className="btn btn-primary">Save changes</button>
+              <button type="button" className="btn btn-secondary fs-6" data-mdb-dismiss="modal">Close</button>
+              {whereUsed==='AllProfiles'?(<button type="button" onClick={()=>saveProfileInCart(profile)} className="btn btn-primary fs-6"><i class="fas fa-heart text-danger"></i> Save In Cart</button>):
+               whereUsed==='ProfileCart'?(<button type="button" className="btn btn-danger fs-6"><i class="fas fa-heart-crack text-danger"></i> Remove From Cart</button>):
+               (<></>)
+              }
             </div>
           </div>
         </div>
@@ -181,8 +209,8 @@ const AllProfilesCard = ({allProfiles,userAuth}) =>{
         <div className="align-item-center">
             <div className="container pb-2 mb-2">
                 <section className="p-md-3 mx-md-5 text-center text-lg-left">
-                    <h2 className="text-center font-weight-bold mb-4 pb-1">All Profiles</h2>
-                    <p className="text-center lead mb-5 pb-2 text-muted">The profile page exhibits a collection of profiles with search and sorting capabilities.</p>
+                    <h2 className="text-center font-weight-bold mb-4 pb-1">{headingText}</h2>
+                    <p className="text-center lead mb-5 pb-2 text-muted">{discriptionText}</p>
                     <div className="row">
                     {currentProfiles.map((profile,index)=>{
                         return(

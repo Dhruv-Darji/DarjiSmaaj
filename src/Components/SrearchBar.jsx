@@ -51,7 +51,7 @@ const SearchBar = ({filterData,setFilterData,applyFiltersClicked,setApplyFilters
         <div className="input-group p-4">
             <input value={searchText} onChange={searchCall} type="search" className="form-control rounded" placeholder="Search By Name,Village,Pargana" aria-label="Search" aria-describedby="search-addon" />
             <button 
-            className="btn btn-secondary dropdown-toggle"
+            className="btn btn-primary dropdown-toggle"
             type="button"
             id="dropdownMenuButton"
             data-mdb-toggle="dropdown"
@@ -59,9 +59,6 @@ const SearchBar = ({filterData,setFilterData,applyFiltersClicked,setApplyFilters
             >
                 <i className="fas fa-filter"></i>
             </button>
-            <button id="search-button" type="button" className="btn btn-primary">
-                <i className="fas fa-search"></i>
-            </button> 
             <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <div className="card text-center">
             <div className="card-header">Filter</div>

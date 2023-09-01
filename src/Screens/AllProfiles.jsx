@@ -25,7 +25,6 @@ const AllProfiles = () =>{
 
     const fetchAllProfile = async () =>{
         setIsLoading(true);
-        console.log('filterData:',filterData)
         const queryParams = new URLSearchParams(filterData);
         await axios.get(
             `http://192.168.0.112:8080/allProfiles/Accepted?${queryParams}`,
@@ -75,7 +74,12 @@ const AllProfiles = () =>{
                     allProfiles={allProfiles}
                     setSearchedProfiles={setSearchedProfiles}
                     />
-                    <AllProfilesCard allProfiles={searchedProfiles} userAuth={userAuth}/>
+                    <AllProfilesCard
+                    headingText={'All Profiles'}
+                    discriptionText={'The profile page exhibits a collection of profiles with Searching and Filtering capabilities.'}
+                    whereUsed={'AllProfiles'} 
+                    allProfiles={searchedProfiles} 
+                    userAuth={userAuth}/>
                 </>
             )}
             </div>
