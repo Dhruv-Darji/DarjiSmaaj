@@ -46,7 +46,30 @@ const AllProfilesCard = ({headingText,discriptionText,whereUsed,allProfiles,user
       ).catch((e)=>{
         if(e.response){          
           showErrorToast(`${e.response.data}`);
-          console.error('Error while allProfile!',e.response.data);
+          console.error('Error while addToCart!',e.response.data);
+        }else{
+            showErrorToast('Oops! Server Unreachable.');
+        }
+      });
+    }
+
+    const removeFromCart = async (profile) =>{
+      await axios.post(
+        'http://192.168.0.112:8080/profileCart/removeFromCart',
+        {
+          UserId:userAuth.UserId,
+          ProfileId:profile.ProfileId
+        },
+        {timeout:20000}
+      ).then((response)=>{
+        if(response.data){
+          showSuccessToast(`${response.data}`);
+        }
+      })
+      .catch((e)=>{
+        if(e.response){          
+          showErrorToast(`${e.response.data}`);
+          console.error('Error while remove from Cart!',e.response.data);
         }else{
             showErrorToast('Oops! Server Unreachable.');
         }
@@ -190,8 +213,8 @@ const AllProfilesCard = ({headingText,discriptionText,whereUsed,allProfiles,user
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary fs-6" data-mdb-dismiss="modal">Close</button>
-              {whereUsed==='AllProfiles'?(<button type="button" onClick={()=>saveProfileInCart(profile)} className="btn btn-primary fs-6"><i class="fas fa-heart text-danger"></i> Save In Cart</button>):
-               whereUsed==='ProfileCart'?(<button type="button" className="btn btn-danger fs-6"><i class="fas fa-heart-crack text-danger"></i> Remove From Cart</button>):
+              {whereUsed==='AllProfiles'?(<button type="button" onClick={()=>saveProfileInCart(profile)} className="btn btn-primary fs-6"><i className="fas fa-heart text-danger"></i> Save In Cart</button>):
+               whereUsed==='ProfileCart'?(<button type="button" onClick={()=>removeFromCart(profile)} className="btn btn-danger fs-6"><i className="fas fa-heart-crack text-light"></i> Remove From Cart</button>):
                (<></>)
               }
             </div>
