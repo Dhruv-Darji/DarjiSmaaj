@@ -7,6 +7,7 @@ import axios from "axios";
 
 const ProfileCart = () =>{
     const [isLoading,setIsLoading] = useState(true);
+    const [reLoad,setReLoad] = useState(false);
     const [cartProfiles,setCartProfiles] = useState([]);
     const [userAuth,setUserAuth] = useState({
         RoleId:'',
@@ -15,6 +16,7 @@ const ProfileCart = () =>{
       });
     
     const fetchCartProfiles = async (UserId) =>{
+        setIsLoading(true);
         await axios.get(
             `http://192.168.0.112:8080/profileCart/cartProfiles/${UserId}`,
             {timeout:25000}
@@ -46,7 +48,7 @@ const ProfileCart = () =>{
         setUserAuth({RoleId,UserId,Email});                  
     }
     fetchData();         
-    },[]);
+    },[reLoad]);
 
     return(
         <>
@@ -58,6 +60,8 @@ const ProfileCart = () =>{
             (
                 <>
                     <AllProfilesCard
+                    reLoad={reLoad}
+                    setReLoad={setReLoad}
                     headingText={'Cart Profiles'}
                     discriptionText={'The profile Cart store the saved profile which is liked by You.'}
                     whereUsed={'ProfileCart'} 

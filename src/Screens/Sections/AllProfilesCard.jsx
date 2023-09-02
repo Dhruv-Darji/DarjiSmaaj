@@ -6,7 +6,7 @@ import DownloadFile from "../../Components/DownloadFile";
 import { showErrorToast, showSuccessToast } from "../../Components/Toast";
 import axios from "axios";
 
-const AllProfilesCard = ({headingText,discriptionText,whereUsed,allProfiles,userAuth}) =>{
+const AllProfilesCard = ({reLoad,setReLoad,headingText,discriptionText,whereUsed,allProfiles,userAuth}) =>{
     const [currentPage, setCurrentPage] = useState(1);
     const profilesPerPage = 6;
     const indexOfLastProfile = currentPage * profilesPerPage;
@@ -64,6 +64,7 @@ const AllProfilesCard = ({headingText,discriptionText,whereUsed,allProfiles,user
       ).then((response)=>{
         if(response.data){
           showSuccessToast(`${response.data}`);
+          setReLoad(!reLoad);
         }
       })
       .catch((e)=>{
@@ -213,8 +214,8 @@ const AllProfilesCard = ({headingText,discriptionText,whereUsed,allProfiles,user
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary fs-6" data-mdb-dismiss="modal">Close</button>
-              {whereUsed==='AllProfiles'?(<button type="button" onClick={()=>saveProfileInCart(profile)} className="btn btn-primary fs-6"><i className="fas fa-heart text-danger"></i> Save In Cart</button>):
-               whereUsed==='ProfileCart'?(<button type="button" onClick={()=>removeFromCart(profile)} className="btn btn-danger fs-6"><i className="fas fa-heart-crack text-light"></i> Remove From Cart</button>):
+              {whereUsed==='AllProfiles'?(<button type="button" onClick={()=>saveProfileInCart(profile)} className="btn btn-primary fs-6" data-mdb-dismiss="modal"><i className="fas fa-heart text-danger"></i> Save In Cart</button>):
+               whereUsed==='ProfileCart'?(<button type="button" onClick={()=>removeFromCart(profile)} className="btn btn-danger fs-6" data-mdb-dismiss="modal"><i className="fas fa-heart-crack text-light"></i> Remove From Cart</button>):
                (<></>)
               }
             </div>
