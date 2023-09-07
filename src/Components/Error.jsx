@@ -53,9 +53,9 @@ const Error = () =>{
                 </div>
                 <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center updownanimate my-4">
                 <img
-                    src="Images/401 Error.jpg"
+                    src="/Images/401 Error.jpg"
                     className="img-fluid px-4"
-                    alt="Home Img"
+                    alt="Error Img"
                 />
                 </div>
             </div>

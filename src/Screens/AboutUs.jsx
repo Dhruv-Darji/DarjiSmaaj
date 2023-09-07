@@ -10,7 +10,7 @@ const AboutUs = () =>{
                     <div className="col-md-6 mb-4">
 
                         <div className="view">
-                            <img src="Images/AboutUs1.jpg" className="img-fluid" alt="Error"  style={{height:'90%',width:'90%'}} />
+                            <img src="/Images/AboutUs1.jpg" className="img-fluid" alt="Error"  style={{height:'90%',width:'90%'}} />
                         </div>
 
                     </div>
@@ -40,7 +40,7 @@ const AboutUs = () =>{
                     </div>
                     <div className="col-md-4 d-flex align-items-center">
                         <div className="view">
-                            <img src="Images/AboutUs2.jpeg" className="img-fluid" alt="Error"/>
+                            <img src="/Images/AboutUs2.jpeg" className="img-fluid" alt="Error"/>
                         </div>
                     </div>
                 </div>
