@@ -1,47 +1,32 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
+import Auth from "../Roles/Auth";
+import '../Styles/Home.css'
+import HomeSection from "./Sections/HomeSection";
+import ProfileSection from "./Sections/ProfileSection";
 
 const Home = () => {
+    const [userAuth,setUserAuth] = useState({
+        RoleId:'',
+        UserId:'',
+        Email:''
+      });
+      useEffect(()=>{
+        const fetchData = async () =>{
+            const {RoleId,UserId,Email} = await Auth();
+            setUserAuth({RoleId,UserId,Email});                  
+        }
+        fetchData();             
+      },[]);
 
-    const [singleUser, setSingleUser] = useState({
-        Email: '',
-        Name: '',
-    });
-
-    const getSingleValue = (event) => {
-        const { name, value } = event.target;
-        setSingleUser({ ...singleUser, [name]: value });
-    }
-
-    return (
-        <>
-            <div className="form-outline">
-                <input
-                    type="email"
-                    id="typeEmail"
-                    className="form-control"
-                    name='Email'
-                    value={singleUser.Email}
-                    onChange={getSingleValue}
-                />
-                <label className="form-label" htmlFor="typeEmail">Email input</label>
-            </div>
-            <div className="form-outline">
-                <input
-                    type="text"
-                    id="typeName"
-                    className="form-control"
-                    name='Name'
-                    value={singleUser.Name}
-                    onChange={getSingleValue}
-                />
-                <label className="form-label" htmlFor="typeName">Name</label>
-            </div>
-            <button type="button" onClick={(e) => {
-                e.preventDefault();
-                console.log(singleUser);
-            }} className="btn btn-primary mx-4">Button</button>
-        </>
-    );
-}
+  return (
+    <> 
+      <div className="data-mdb-animation-delay">     
+        <HomeSection userAuth={userAuth}/>
+        <hr className="hr hr-blurry mt-4" />
+        <ProfileSection/>
+      </div>
+    </> 
+  );
+};
 
 export default Home;

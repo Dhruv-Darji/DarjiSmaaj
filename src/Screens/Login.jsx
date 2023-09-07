@@ -3,9 +3,10 @@ import '../Styles/Login.css';
 import axios from "axios";
 import Auth from "../Roles/Auth";
 import { useNavigate } from "react-router-dom";
+import Toast, { showSuccessToast,showErrorToast } from '../Components/Toast';
 
 const Login = () => {
-    
+  const api_key = process.env.REACT_APP_API_KEY;
   const [fieldValue,setFieldValue] = useState({
     Email:"",
     Password:""
@@ -32,24 +33,42 @@ const Login = () => {
   axios.defaults.withCredentials = true;
   const navigate = useNavigate();
 
+  const passUser = async() =>{
+    const { RoleId } = await Auth();
+    if(RoleId===1 || RoleId===2 || RoleId===3){      
+      navigate('/Dashboard');
+    }
+    else{
+      navigate('/');
+    }
+  }
+
   const handleSubmit = async (e) =>{
     e.preventDefault();
     if(userAuth.RoleId === null && userAuth.UserId === null && userAuth.Email === null){
-      axios.post('http://localhost:8080/authenticate',fieldValue).then(
-        ()=>{
-          console.log('user Login confirm.');
-          navigate('/');          
+      await axios.post(`${api_key}/authenticate`,fieldValue).then(
+        (response)=>{
+          if(response.status===200){
+            passUser();
+          }
         }        
       ).catch((e)=>{
-        console.error('Error while login!',e)
+        if(e.response){
+          showErrorToast(`${e.response.data}`);
+        console.error('Error while login!',e.response.data);
+      }else{
+        showErrorToast('Server Unreachable!');
+      }
       });
     }
     else{
+      showSuccessToast("You are already authenticated.");
       console.log('You are already authenticated.');
     }
   }
     return(
-        <>          
+        <> 
+        <Toast/>              
         <section className="">
           <div className="px-4 py-5 px-md-5 text-center text-lg-start BackgroundColor">
             <div className="container">

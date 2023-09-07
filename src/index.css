@@ -3,3 +3,9 @@
   margin: 0;
   font-family: 'Quicksand', sans-serif;
 }
+.transparentbutton{
+  background-color: transparent;  
+}
+.change-curser{
+  cursor: pointer;
+}
