@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Toast, { showSuccessToast,showErrorToast } from '../Components/Toast';
 
 const Login = () => {
-    
+  const api_key = process.env.REACT_APP_API_KEY;
   const [fieldValue,setFieldValue] = useState({
     Email:"",
     Password:""
@@ -46,7 +46,7 @@ const Login = () => {
   const handleSubmit = async (e) =>{
     e.preventDefault();
     if(userAuth.RoleId === null && userAuth.UserId === null && userAuth.Email === null){
-      await axios.post('http://192.168.0.112:8080/authenticate',fieldValue).then(
+      await axios.post(`${api_key}/authenticate`,fieldValue).then(
         (response)=>{
           if(response.status===200){
             passUser();

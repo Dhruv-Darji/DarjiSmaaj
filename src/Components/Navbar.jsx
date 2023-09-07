@@ -6,6 +6,7 @@ import { showErrorToast } from "./Toast";
 import ImageUrlGiver from "./ImageUrlGiver";
  
 const Navbar = () =>{
+    const api_key = process.env.REACT_APP_API_KEY;
     const [profilePath,setProfilePath] = useState('');
     const [userAuth,setUserAuth] = useState({
         RoleId:'',
@@ -16,7 +17,7 @@ const Navbar = () =>{
 
     const getUserProfile = async (UserId) =>{
         await axios.get(
-            `http://192.168.0.112:8080/getProfilePath/${UserId}`
+            `${api_key}/getUserImage/${UserId}`
         ).then(
             (response)=>{
                 setProfilePath(response.data[0].ProfilePath)
@@ -47,7 +48,7 @@ const Navbar = () =>{
     const navigate = useNavigate();
 
     const handleLogOut = () =>{
-        axios.get('http://192.168.0.112:8080/logout').then(
+        axios.get('${api_key}/logout').then(
             () =>{
                 window.location.reload();
             }

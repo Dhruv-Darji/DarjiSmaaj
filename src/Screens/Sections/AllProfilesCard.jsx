@@ -7,6 +7,7 @@ import { showErrorToast, showSuccessToast } from "../../Components/Toast";
 import axios from "axios";
 
 const AllProfilesCard = ({reLoad,setReLoad,headingText,discriptionText,whereUsed,allProfiles,userAuth}) =>{
+    const api_key = process.env.REACT_APP_API_KEY;  
     const [currentPage, setCurrentPage] = useState(1);
     const profilesPerPage = 6;
     const indexOfLastProfile = currentPage * profilesPerPage;
@@ -31,7 +32,7 @@ const AllProfilesCard = ({reLoad,setReLoad,headingText,discriptionText,whereUsed
 
     const saveProfileInCart = async (profile) =>{      
       await axios.post(
-        'http://192.168.0.112:8080/profileCart/addToCart',
+        `${api_key}/profileCart/addToCart`,
         {
           UserId:userAuth.UserId,
           ProfileId:profile.ProfileId
@@ -55,7 +56,7 @@ const AllProfilesCard = ({reLoad,setReLoad,headingText,discriptionText,whereUsed
 
     const removeFromCart = async (profile) =>{
       await axios.post(
-        'http://192.168.0.112:8080/profileCart/removeFromCart',
+        `${api_key}/profileCart/removeFromCart`,
         {
           UserId:userAuth.UserId,
           ProfileId:profile.ProfileId
@@ -233,7 +234,7 @@ const AllProfilesCard = ({reLoad,setReLoad,headingText,discriptionText,whereUsed
         <div className="align-item-center">
             <div className="container pb-2 mb-2">
                 <section className="p-md-3 mx-md-5 text-center text-lg-left">
-                    <h2 className="text-center font-weight-bold mb-4 pb-1">{headingText}</h2>
+                    <h2 className="text-center font-weight-bold mb-4 mt-3 pb-1">{headingText}</h2>
                     <p className="text-center lead mb-5 pb-2 text-muted">{discriptionText}</p>
                     <div className="row">
                     {currentProfiles.map((profile,index)=>{

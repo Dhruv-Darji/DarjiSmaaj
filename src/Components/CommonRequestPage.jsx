@@ -18,8 +18,9 @@ const CommonRequestPage = ({whichDataWant}) =>{
 
     const getRequestData = async (UserId) =>{
         if(['Pending','Rejected','Accepted'].includes(whichDataWant)){
+            const api_key = process.env.REACT_APP_API_KEY;
             await axios.get(
-                `http://192.168.0.112:8080/getProfile/administrate/${whichDataWant}/${UserId}`,
+                `${api_key}/getProfile/administrate/${whichDataWant}/${UserId}`,
                 {timeout:20000}
             ).then(
                 (response)=>{
@@ -46,7 +47,7 @@ const CommonRequestPage = ({whichDataWant}) =>{
         setIsLoading(true);
         if(window.confirm(`Do You Confirm That To change Status --> ${changeStatusTo}`)){
             await axios.post(
-                'http://192.168.0.112:8080/change_Status/Profile_Request',
+                '${api_key}/change_Status/Profile_Request',
                 {
                     ProfileId:ProfileId,
                     ChangeRoleTo:changeStatusTo,

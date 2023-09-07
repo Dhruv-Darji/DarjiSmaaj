@@ -6,13 +6,14 @@ import DateFormater from "../../Components/DateFormater";
 import ImageUrlGiver from "../../Components/ImageUrlGiver";
 
 const ProfileSection = () => {
+  const api_key = process.env.REACT_APP_API_KEY;
   const [profiles, setProfiles] = useState([]);
   const navigate = useNavigate();
 
   const fetchProfile = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.0.112:8080/getsixProfile`,
+        `${api_key}/getsixProfile`,
         { timeout: 20000 }
       );
       setProfiles(response.data);

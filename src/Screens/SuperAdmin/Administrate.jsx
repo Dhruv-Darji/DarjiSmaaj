@@ -9,6 +9,7 @@ import Loading from "../../Components/Loading";
 import ImageUrlGiver from "../../Components/ImageUrlGiver";
 
 const Administrate = () => {
+    const api_key = process.env.REACT_APP_API_KEY;
     const navigate = useNavigate();
     const [isLoading,setIsLoading] = useState(true);
     const [inputCheck,setInputCheck] = useState(false);
@@ -22,8 +23,12 @@ const Administrate = () => {
         UserId: '',
         Email: ''
     });
-    const fetchAdminUser = async() =>{
-        await axios.get('http://192.168.0.112:8080/list/assignRole')
+    const fetchAdminUser = async(UserId) =>{
+        const url = `${api_key}/list/allUsers-to-assignRole/${UserId}`
+        await axios.get(
+            url,
+            {timeout:20000}
+        )
         .then(
             (respons)=>{
                 const usersdata = respons.data;
@@ -41,7 +46,11 @@ const Administrate = () => {
         });
     }
     const fetchDadminUser = async (UserId) =>{
-        await axios.post("http://192.168.0.112:8080/list/districtUser",{UserId:UserId}).then(
+        const url = `${api_key}/list/districtUser/${UserId}`
+        await axios.get(
+            url,
+            {timeout:20000}
+        ).then(
             (respons)=>{
                 const usersdata = respons.data;
                 SetUsers(usersdata);
@@ -62,7 +71,7 @@ const Administrate = () => {
             const { RoleId, UserId, Email } = await Auth();
             setUserAuth({ RoleId, UserId, Email });
             if(RoleId===1){                
-                fetchAdminUser();
+                fetchAdminUser(UserId);
             }
             else if(RoleId === 2){                
                 fetchDadminUser(UserId);
@@ -145,21 +154,25 @@ const Administrate = () => {
         setIsLoading(true);
         const changeRoleId = selectedRole.RoleId;
         const userUserId = user.UserId;
-        const currentRoleId = userAuth.RoleId;
         const currentUserId = userAuth.UserId;
-        const combinedData = {changeRoleId,userUserId,currentRoleId,currentUserId};
+        const combinedData = {changeRoleId,userUserId,currentUserId};
         if(changeRoleId===user.RoleId){
             showSuccessToast('User is Already in same Position');            
             setIsLoading(false);
         }
         else{
             if(window.confirm(`Are You Sure to assign ${user.SurName} ${user.MiddleName} As ${selectedRole.RoleName}`)){
-            axios.post('http://192.168.0.112:8080/change/assignRole',combinedData,{timeout:25000}).then(
+            const url = `${api_key}/change/assignRole`;
+            axios.post(
+                    url,
+                    combinedData,
+                    {timeout:25000}
+                ).then(
                 ()=>{
                     console.log("Role Updated successfuly");
                     showSuccessToast("Role Updated successfuly");
                     if(userAuth.RoleId===1){                        
-                        fetchAdminUser();
+                        fetchAdminUser(userAuth.UserId);
                     }
                     if(userAuth.RoleId===2){
                         fetchDadminUser(userAuth.UserId);
@@ -191,17 +204,17 @@ const Administrate = () => {
         setIsLoading(true);
         const AssignedPinCode =testnumber;
         const CurrentUserId = userAuth.UserId;
-        const CurrentUserRoleId = userAuth.RoleId;
         const UserId = user.UserId;
 
-        const combinedData ={AssignedPinCode,CurrentUserId,UserId,CurrentUserRoleId}
+        const combinedData ={AssignedPinCode,CurrentUserId,UserId}
         
         if(window.confirm(`Are You confirm To Assign ${testnumber} to ${user.SurName} ${user.MiddleName}`)){
-            await axios.post('http://192.168.0.112:8080/change/admin/village',combinedData,{timeout:25000}).then(
+            const url = `${api_key}/change/admin/village`;
+            await axios.post(url,combinedData,{timeout:25000}).then(
             ()=>{
                 showSuccessToast("PinCode Successfully Assigned");
                 if(userAuth.RoleId===1){
-                    fetchAdminUser();
+                    fetchAdminUser(userAuth.UserId);
                 }
                 else if(userAuth.RoleId===2){
                     fetchDadminUser(userAuth.UserId);

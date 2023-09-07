@@ -2,7 +2,8 @@ import axios from "axios";
 import { showErrorToast } from "./Toast";
 
 const DownloadFile = async (filePath) => {
-    const download_url = `http://192.168.0.112:8080/file/download?path=${encodeURIComponent(filePath)}`;
+    const api_key = process.env.REACT_APP_API_KEY;
+    const download_url = `${api_key}/file/download?path=${encodeURIComponent(filePath)}`;
     await axios.get(
         download_url,
         {timeout:20000},

@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import Loading from '../Components/Loading';
 import Toast, { showSuccessToast,showErrorToast } from '../Components/Toast';
 
-  const SignUp = () => {   
+  const SignUp = () => {
+    const api_key = process.env.REACT_APP_API_KEY;   
     const navigate = useNavigate();
     const [isLoading,setIsLoading] = useState(false);
     const [singleUser,setSingleUser] = useState({
@@ -73,7 +74,7 @@ import Toast, { showSuccessToast,showErrorToast } from '../Components/Toast';
         });
         console.log(formData);      
           if(window.confirm(`Do you confirm to Register?`)){
-            await axios.post('http://192.168.0.112:8080/createUser',formData).then(
+            await axios.post(`${api_key}/createUser`,formData).then(
             ()=>{
                 showSuccessToast('Successfully Registered 🥰.');
                 setIsLoading(false);

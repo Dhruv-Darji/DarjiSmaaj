@@ -10,6 +10,7 @@ import ImageUrlGiver from "../../Components/ImageUrlGiver";
 
 const DistrictAdminList = () => {
   const navigate = useNavigate();
+  const api_key = process.env.REACT_APP_API_KEY;
   const [isLoading,setIsLoading] = useState(true);
   const [usersData,setUsersData] = useState([]);
   const [userAuth,setUserAuth] = useState({
@@ -18,8 +19,12 @@ const DistrictAdminList = () => {
     Email:''
   });
 
-  const fetchDadmin = async (RoleId) =>{
-    await axios.post('http://192.168.0.112:8080/list/DistrictAdmin',{RoleId},{timeout:15000}).then(
+  const fetchDadmin = async (UserId) =>{
+    const url = `${api_key}/list/DistrictAdmin/${UserId}`;
+    await axios.get(
+        url,
+        {timeout:15000}
+      ).then(
       (response)=>{
         setUsersData(response.data);
         setIsLoading(false);
@@ -40,7 +45,7 @@ const DistrictAdminList = () => {
         const {RoleId,UserId,Email} = await Auth();
         setUserAuth({RoleId,UserId,Email});
         if(RoleId===1 || RoleId===2){
-          fetchDadmin(RoleId);
+          fetchDadmin(UserId);
         }else{
           navigate('/error');
         }
@@ -56,10 +61,10 @@ const DistrictAdminList = () => {
       const currentUserId = userAuth.UserId;
       const UserRoleId = user.UserRoleId;      
       const combindedData = {currentRoleId,UserRoleId,currentUserId}      
-      await axios.post('http://192.168.0.112:8080/remove/Admin',combindedData,{timeout:15000}).then(
+      await axios.post(`${api_key}/remove/Admin`,combindedData,{timeout:15000}).then(
           async ()=>{   
             showSuccessToast('District Admin Remove Success');            
-            await fetchDadmin(currentRoleId);
+            await fetchDadmin(currentUserId);
           }
         ).catch((e)=>{
           if(e.response){

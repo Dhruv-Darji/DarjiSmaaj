@@ -9,6 +9,7 @@ import axios from "axios";
 import ImageUrlGiver from "../../Components/ImageUrlGiver";
 
 const AdminList = () =>{
+    const api_key = process.env.REACT_APP_API_KEY;
     const [isLoading,setIsLoading] = useState(true);
     const navigate = useNavigate();
     const [usersData,setUsersData] = useState([]);
@@ -18,8 +19,12 @@ const AdminList = () =>{
         Email:''
       });
 
-    const fetch_admins = async(currentRoleId,currentUserId) =>{
-        await axios.post('http://192.168.0.112:8080/list/Admin',{RoleId:currentRoleId,currentUserId:currentUserId},{timeout:15000}).then(
+    const fetch_admins = async(currentUserId) =>{
+      const url = `${api_key}/list/Admin/${currentUserId}`;
+        await axios.get(
+            url,
+            {timeout:15000}
+          ).then(
             (response)=>{
                 setUsersData(response.data);
                 setIsLoading(false);
@@ -40,7 +45,7 @@ const AdminList = () =>{
             const {RoleId,UserId,Email} = await Auth();
             setUserAuth({RoleId,UserId,Email});
             if(RoleId===1 || RoleId===2){
-                fetch_admins(RoleId,UserId);
+                fetch_admins(UserId);
             }else{
               navigate('/error');
             }
@@ -51,17 +56,17 @@ const AdminList = () =>{
       const handleUserRemove = async (user) =>{
         setIsLoading(true);
         if(window.confirm(`Do You realy want to remove ${user.SurName} ${user.MiddleName}  from Admin of ${user.AssignedDistrict}.Keep In Mind That If You remove him from Admin then Whole Assigned District will also be removed.`)){
-            await axios.post(
-                'http://192.168.0.112:8080/remove/Admin',
+          const url = `${api_key}/remove/Admin`;  
+          await axios.post(
+                url,
                 {
                     UserRoleId:user.UserRoleId, 
-                    currentRoleId:userAuth.RoleId, 
                     currentUserId:userAuth.UserId,
                 },
                 {timeout:15000}
             ).then(
             async ()=>{               
-            await fetch_admins(userAuth.RoleId,userAuth.UserId);                        
+            await fetch_admins(userAuth.UserId);                        
             showSuccessToast('District Admin Remove Success');
           }
         ).catch((e)=>{

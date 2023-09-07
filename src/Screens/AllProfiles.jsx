@@ -26,8 +26,10 @@ const AllProfiles = () =>{
     const fetchAllProfile = async () =>{
         setIsLoading(true);
         const queryParams = new URLSearchParams(filterData);
+        const api_key = process.env.REACT_APP_API_KEY;
+        const url = `${api_key}/allProfiles/Accepted?${queryParams}`;
         await axios.get(
-            `http://192.168.0.112:8080/allProfiles/Accepted?${queryParams}`,
+            url,
             {timeout:2000}
         )
         .then((response)=>{

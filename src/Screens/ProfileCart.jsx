@@ -6,6 +6,7 @@ import Auth from "../Roles/Auth";
 import axios from "axios";
 
 const ProfileCart = () =>{
+    const api_key = process.env.REACT_APP_API_KEY;
     const [isLoading,setIsLoading] = useState(true);
     const [reLoad,setReLoad] = useState(false);
     const [cartProfiles,setCartProfiles] = useState([]);
@@ -18,7 +19,7 @@ const ProfileCart = () =>{
     const fetchCartProfiles = async (UserId) =>{
         setIsLoading(true);
         await axios.get(
-            `http://192.168.0.112:8080/profileCart/cartProfiles/${UserId}`,
+            `${api_key}/profileCart/cartProfiles/${UserId}`,
             {timeout:25000}
         ).then((response)=>{
             if(response.data){

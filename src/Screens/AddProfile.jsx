@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const AddProfile = () => {
   const navigate = useNavigate();
+  const api_key = process.env.REACT_APP_API_KEY;
   const [isLoading,setIsLoading] = useState(false);
   const [biodataFile,setBiodataFile] = useState();
   const [profileFile,setProfileFile] = useState();
@@ -102,7 +103,7 @@ const AddProfile = () => {
             
         if(window.confirm('Have you checked all documnets and then posting all the data?')){
             await axios.post(
-                'http://192.168.0.112:8080/addProfile',
+                `${api_key}/addProfile`,
                 formData,
                 {timeout:30000}
             ).then(
