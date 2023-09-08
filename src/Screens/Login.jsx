@@ -25,7 +25,7 @@ const Login = () => {
     fetchData();             
   },[]); 
 
-  const handleField = (event) =>{
+  const handleField = (event) => {
     const {name,value} = event.target;
     setFieldValue({...fieldValue, [name] : value});
   }
