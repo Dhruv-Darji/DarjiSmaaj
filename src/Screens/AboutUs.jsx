@@ -10,7 +10,10 @@ const AboutUs = () =>{
                     <div className="col-md-6 mb-4">
 
                         <div className="view">
-                            <img src="/Images/AboutUs1.jpg" className="img-fluid" alt="Error"  style={{height:'90%',width:'90%'}} />
+                            <img src="https://img.freepik.com/premium-vector/man-tailor-sitting-table-sewing-machine-atelier-studio-workshop-fashion-designer-profession-job-occupation_575670-321.jpg?w=900" 
+                            className="img-fluid" 
+                            alt="Error"  
+                            style={{height:'90%',width:'90%'}} />
                         </div>
 
                     </div>
@@ -40,7 +43,10 @@ const AboutUs = () =>{
                     </div>
                     <div className="col-md-4 d-flex align-items-center">
                         <div className="view">
-                            <img src="/Images/AboutUs2.jpeg" className="img-fluid" alt="Error"/>
+                            <img 
+                            src="https://img.freepik.com/free-vector/set-four-cartoon-compositions-with-atelier-tools-tailor-seamstress-taking-measurements-isolated-illustration_1284-65565.jpg?size=626&ext=jpg&ga=GA1.2.377597230.1666598248&semt=ais" 
+                            className="img-fluid" 
+                            alt="Error"/>
                         </div>
                     </div>
                 </div>

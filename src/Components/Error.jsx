@@ -53,7 +53,7 @@ const Error = () =>{
                 </div>
                 <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center updownanimate my-4">
                 <img
-                    src="/Images/401 Error.jpg"
+                    src="https://img.freepik.com/free-vector/401-error-unauthorized-concept-illustration_114360-1934.jpg?w=740&t=st=1694100889~exp=1694101489~hmac=12ad8b8b2c0fb8c8e0df60f5c0bca9ae1aed76163c408ea4323541dbc834d8ba"
                     className="img-fluid px-4"
                     alt="Error Img"
                 />
