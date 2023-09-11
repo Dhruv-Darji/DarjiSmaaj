@@ -80,7 +80,7 @@ const Footer = () =>{
     
     <div className="text-center p-4" style={{backgroundColor: 'rgba(0, 0, 0, 0.05)'}}>
         © 2021 Copyright:
-        <NavLink to={`${api_key}`} className="text-reset fw-bold">Dhruv Darji</NavLink>
+        <NavLink className="text-reset fw-bold">Dhruv Darji</NavLink>
     </div>
     
     </footer>

@@ -11,13 +11,13 @@ import { useNavigate } from "react-router-dom";
 
 
 const CommonRequestPage = ({whichDataWant}) =>{
+    const api_key = process.env.REACT_APP_API_KEY;
     const [isLoading,setIsLoading] = useState(true);
     const [usersData,setUsersData] = useState([]);
     const navigate = useNavigate();
     const [userAuth_UserId,setUserAuth] = useState();
 
     const getRequestData = async (UserId) =>{
-        const api_key = process.env.REACT_APP_API_KEY;
         if(['Pending','Rejected','Accepted'].includes(whichDataWant)){
             await axios.get(
                 `${api_key}/getProfile/administrate/${whichDataWant}/${UserId}`,
@@ -188,12 +188,12 @@ const CommonRequestPage = ({whichDataWant}) =>{
                 </p>
                 <div className="mb-4 pb-2">
                     {user.ApprovedStatus==='Pending' || user.ApprovedStatus==='Accepted'?(
-                    <button onClick={()=>handleApproveStatusChange(user.ProfileId,'Rejected')} type="button" className="btn btn-danger m-4 fw-bold" data-mdb-ripple-color="dark">
+                    <button data-mdb-dismiss="modal" onClick={()=>handleApproveStatusChange(user.ProfileId,'Rejected')} type="button" className="btn btn-danger m-4 fw-bold" data-mdb-ripple-color="dark">
                         Reject Request
                     </button>
                     ):(<></>)}
                     {user.ApprovedStatus==='Pending' || user.ApprovedStatus==='Rejected'?(
-                    <button onClick={()=>handleApproveStatusChange(user.ProfileId,'Accepted')} type="button" className="btn btn-success m-4 fw-bold" data-mdb-ripple-color="dark">
+                    <button data-mdb-dismiss="modal" onClick={()=>handleApproveStatusChange(user.ProfileId,'Accepted')} type="button" className="btn btn-success m-4 fw-bold" data-mdb-ripple-color="dark">
                         Accept Request
                     </button>
                     ):(<></>)}
