@@ -48,7 +48,7 @@ const Navbar = () =>{
     const navigate = useNavigate();
 
     const handleLogOut = () =>{
-        axios.get('${api_key}/logout').then(
+        axios.get(`${api_key}/logout`).then(
             () =>{
                 window.location.reload();
             }

@@ -9,7 +9,7 @@ const Auth = async () => {
 
     if (token) {
         try {
-            const response = await axios.get('${api_key}/tokenRequest',{timeout:50000});
+            const response = await axios.get(`${api_key}/tokenRequest`,{timeout:50000});
             if (response.data.status === 'token') {
                 const { UserId, RoleId, Email } = response.data;
                 return { UserId, RoleId, Email };
