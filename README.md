@@ -1,70 +1,66 @@
-# Getting Started with Create React App
+# DarjiSamaj
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a specialized matrimonial platform designed exclusively for the [Caste Name] community. It leverages cutting-edge technologies like React.js, Material Design Bootstrap (MDB), Node.js, Express.js, and MySQL to provide a seamless and secure matchmaking experience. The platform includes role management with Admin, SuperAdmin, and DistrictAdmin roles. Users must register and log in to access the system, where they can add and manage their profiles. Profile requests are sent to admin(s) for approval before becoming visible to all users. Planned features include displaying profiles and allowing users to edit their profiles.
 
-## Available Scripts
+## Table of Contents
+- [Access Credentials](#access-credentials)
+- [Demo](#demo)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
 
-In the project directory, you can run:
+## Access Credentials
+To access the administration panel for testing purposes, please use the following credentials:
 
-### `npm start`
+- **Admin ID:** [dadmin@gmail.com]
+- **Admin Password:** [Dadmin123@]
 
-Runs the app in the development mode.\
-Open https://Dhruv-Darji.github.io/DarjiSmaaj to view it in your browser.
+- **Admin ID:** [admin@gmail.com]
+- **Admin Password:** [Admin123@]
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Demo
+Check out the live demo: ([http://65.0.12.55/](http://65.0.12.55/))
 
-### `npm test`
+## Features
+- **Role Management:** The system includes role management with roles such as Admin, SuperAdmin, and District admin.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Pincode API:** Utilizes a Pincode API (https://api.postalpincode.in/pincode/{PINCODE}) to fetch pincodes for various functionalities.
 
-### `npm run build`
+- **User Registration and Login:** Users must register and log in to access the system.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Profile Management:** Registered users can add and manage their profiles.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Profile Approval Workflow:** Profile requests are sent to admin(s) for approval. Profiles are visible to all users only after admin approval.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **Additional Features:** Planned features include displaying profiles and allowing users to edit their profiles.
 
-### `npm run eject`
+## Tech Stack
+- React.js
+- Material Design Bootstrap (MDB)
+- Node.js
+- Express.js
+- MySQL
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Installation
+1. Clone this repository: `git clone [repository URL]`
+2. Install dependencies: `npm install`
+3. It will require Backend also
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Usage
+1. Start the development server: `npm start`
+2. Open your browser and navigate to `http://${IPV4}:3000`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Contributing
+If you would like to contribute to this project, please follow these guidelines:
+- Fork this repository.
+- Create a new branch for your features: `git checkout -b feature-name`
+- Commit your changes: `git commit -m 'Add feature'`
+- Push to the branch: `git push origin feature-name`
+- Submit a pull request.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Feel free to explore the code in this repository. If you have any questions or suggestions, please don't hesitate to reach out. Your feedback is greatly appreciated!
